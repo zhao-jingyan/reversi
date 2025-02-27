@@ -1,5 +1,7 @@
 # REVERSI Week2 Lab
 
+this should be a development info
+
 ## 文档结构
 
     .
