@@ -75,42 +75,46 @@ public class board {
     // }
 
     //flip the pieces
-    boolean flip(int[] input){
+    boolean flip(int[] input) {
         boolean ans = false;
         int x = input[0] - 1;
         int y = input[1] - 1;
         int[][] directions = {
-            {1,0},{-1,0},{0,1},{0,-1},
-            {1,1},{-1,-1},{1,-1},{-1,1}
+            {1, 0}, {-1, 0}, {0, 1}, {0, -1},
+            {1, 1}, {-1, -1}, {1, -1}, {-1, 1}
         };
-        for(int[] dir : directions){
-            ans = ans || flipbeam(dir,x,y,board);
+        for (int[] dir : directions) {
+            ans = ans || flipbeam(dir, x, y, board);
         }
         return ans;
     }
 
-    private static boolean flipbeam(int[] direction, int x, int y, piece board[][]){
+    private static boolean flipbeam(int[] direction, int x, int y, piece board[][]) {
         boolean ans = false;
         int xp = x;
         int yp = y;
         pieceStatus piece = board[xp][yp].status;
         int dx = direction[0];
         int dy = direction[1];
-        while(xp > 0 && yp > 0 && xp < 8 && yp < 8){
+        while(isValidPosition(xp + dx, yp + dy)){
             xp += dx;
             yp += dy;
             if(board[xp][yp].status == pieceStatus.EMPTY)
                 break;
             else if(board[xp][yp].status == piece){
-                while(xp != x || yp != y){
+                while(xp != x || yp != y) {
+                    board[xp][yp].status = piece;
                     xp -= dx;
                     yp -= dy;
-                    board[xp][yp].status = piece;
                 }
                 ans = true;
                 break;
             }
         }
         return ans;
+    }
+
+    private static boolean isValidPosition(int x, int y) {
+        return x >= 0 && x < 8 && y >= 0 && y < 8;
     }
 }
