@@ -13,7 +13,8 @@ public class reversi {
                 break;
             P1.restoreStatus();
             P2.restoreStatus();
-            game.handleMove(P1, P2, board, terminal.getInput());
+            int[] move = terminal.getInput();
+            game.handleMove(P1, P2, board, move);
             screen.update(board,P1,P2);
         }
     }

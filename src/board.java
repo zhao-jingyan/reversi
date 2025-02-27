@@ -4,12 +4,15 @@ public class board {
     int round;
     piece[][] board;
     boolean[][] valid;
+    int[] lastMove;
+
     //construct an empty board with given size
     board(int given_width,int given_height){
         width = given_width;
         height = given_height;
         board = new piece[height][width];
         valid = new boolean[height][width];
+        lastMove = new int[2];
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 valid[i][j] = true;
@@ -22,6 +25,8 @@ public class board {
                 board[i][j].makeEmpty();
             }
         }
+        lastMove[0] = -1;
+        lastMove[0] = -1;
         board[3][3].status = pieceStatus.WHITE;
         board[4][4].status = pieceStatus.WHITE;      
         board[4][3].status = pieceStatus.BLACK;
@@ -30,6 +35,7 @@ public class board {
         valid[4][4] = false;
         valid[4][3] = false;
         valid[3][4] = false;
+
 
     }
 
@@ -50,6 +56,8 @@ public class board {
         board[row - 1][col - 1].update(name);
         valid[row - 1][col - 1] = false;
         round++;
+        lastMove[0] = row;
+        lastMove[1] = col;
     }
 
     boolean isfull(){
@@ -66,9 +74,43 @@ public class board {
     //     return true;
     // }
 
-    // void flip(){
-    //     //flip the pieces
-    // }
+    //flip the pieces
+    boolean flip(int[] input){
+        boolean ans = false;
+        int x = input[0] - 1;
+        int y = input[1] - 1;
+        int[][] directions = {
+            {1,0},{-1,0},{0,1},{0,-1},
+            {1,1},{-1,-1},{1,-1},{-1,1}
+        };
+        for(int[] dir : directions){
+            ans = ans || flipbeam(dir,x,y,board);
+        }
+        return ans;
+    }
 
-
+    private static boolean flipbeam(int[] direction, int x, int y, piece board[][]){
+        boolean ans = false;
+        int xp = x;
+        int yp = y;
+        pieceStatus piece = board[xp][yp].status;
+        int dx = direction[0];
+        int dy = direction[1];
+        while(xp > 0 && yp > 0 && xp < 8 && yp < 8){
+            xp += dx;
+            yp += dy;
+            if(board[xp][yp].status == pieceStatus.EMPTY)
+                break;
+            else if(board[xp][yp].status == piece){
+                while(xp != x || yp != y){
+                    xp -= dx;
+                    yp -= dy;
+                    board[xp][yp].status = piece;
+                }
+                ans = true;
+                break;
+            }
+        }
+        return ans;
+    }
 }

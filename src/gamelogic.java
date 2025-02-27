@@ -32,7 +32,7 @@ public class gamelogic{
                 board.add(p1,move[0],move[1]);
             else if(p2.status == playerStatus.MOVE)
                 board.add(p2,move[0],move[1]);
-
+            board.flip(move);
             switchStatus(p1, p2);
         }
     }
