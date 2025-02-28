@@ -84,7 +84,7 @@ public class board {
             {1, 1}, {-1, -1}, {1, -1}, {-1, 1}
         };
         for (int[] dir : directions) {
-            ans = ans || flipbeam(dir, x, y, board);
+            ans = flipbeam(dir, x, y, board) || ans;    //flipbeam should not be short-circuited
         }
         return ans;
     }
@@ -99,9 +99,7 @@ public class board {
         while(isValidPosition(xp + dx, yp + dy)){
             xp += dx;
             yp += dy;
-            if(board[xp][yp].status == pieceStatus.EMPTY)
-                break;
-            else if(board[xp][yp].status == piece){
+            if(board[xp][yp].status == piece){
                 while(xp != x || yp != y) {
                     board[xp][yp].status = piece;
                     xp -= dx;
@@ -110,6 +108,8 @@ public class board {
                 ans = true;
                 break;
             }
+            else if(board[xp][yp].status == pieceStatus.EMPTY)
+                break;
         }
         return ans;
     }
