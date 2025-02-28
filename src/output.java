@@ -72,7 +72,7 @@ public class output {
         p2 = given_p2;
     }
 
-    public static void clear() {
+    private static void clear() {
         try {
             // 获取操作系统名称
             String os = System.getProperty("os.name");
