@@ -16,6 +16,9 @@ public class output {
     public void print(){
     //clear
         clear();
+    //head
+        System.out.printf("Black: %d\n",board.black);
+        System.out.printf("White: %d\n",board.white);
     //first row
         System.out.printf(" ");
         for(int i = 0; i < board.width; i++){
@@ -45,7 +48,12 @@ public class output {
         System.out.printf("\n");
     //bottom info
         if(board.isfull()){
-            System.out.println("Nowhere to place a new piece, game over!");
+            if(board.black > board.white)
+                System.out.println("Black wins!");
+            else if(board.black < board.white)
+                System.out.println("White wins!");  
+            else if(board.black == board.white)
+                System.out.println("A tied game!");      
         }
         else{
         //error info

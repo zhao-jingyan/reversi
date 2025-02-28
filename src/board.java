@@ -2,12 +2,18 @@ public class board {
     int width;
     int height;
     int round;
+    int white;
+    int black;
+    int empty;
     piece[][] board;
     boolean[][] valid;
     int[] lastMove;
 
     //construct an empty board with given size
     board(int given_width,int given_height){
+        empty = 8 * 8 - 4;
+        white = 2;
+        black = 2;
         width = given_width;
         height = given_height;
         board = new piece[height][width];
@@ -45,6 +51,9 @@ public class board {
         for(piece[] row: board)
             for(piece item: row)
                 item.makeEmpty();
+        white = 2;
+        black = 2;
+        empty = 8 * 8 - 4;
         board[3][3].status = pieceStatus.WHITE;
         board[4][4].status = pieceStatus.WHITE;      
         board[4][3].status = pieceStatus.BLACK;
@@ -58,6 +67,14 @@ public class board {
         round++;
         lastMove[0] = row;
         lastMove[1] = col;
+        if(name.priority == 1){
+            black++;
+            empty--;
+        }
+        else if(name.priority == 2){
+            white++;
+            empty--;
+        }
     }
 
     boolean isfull(){
@@ -84,12 +101,12 @@ public class board {
             {1, 1}, {-1, -1}, {1, -1}, {-1, 1}
         };
         for (int[] dir : directions) {
-            ans = flipbeam(dir, x, y, board) || ans;    //flipbeam should not be short-circuited
+            ans = this.flipbeam(dir, x, y) || ans;    //flipbeam should not be short-circuited
         }
         return ans;
     }
 
-    private static boolean flipbeam(int[] direction, int x, int y, piece board[][]) {
+    private boolean flipbeam(int[] direction, int x, int y) {
         boolean ans = false;
         int xp = x;
         int yp = y;
@@ -100,8 +117,18 @@ public class board {
             xp += dx;
             yp += dy;
             if(board[xp][yp].status == piece){
+            xp -= dx;
+            yp -= dy;
                 while(xp != x || yp != y) {
                     board[xp][yp].status = piece;
+                    if(piece == pieceStatus.BLACK){
+                        black++;
+                        white--;
+                    }
+                    else if(piece == pieceStatus.WHITE){
+                        white++;
+                        black--;
+                    }
                     xp -= dx;
                     yp -= dy;
                 }
