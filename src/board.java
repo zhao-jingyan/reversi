@@ -33,6 +33,7 @@ public class board {
         }
         lastMove[0] = -1;
         lastMove[0] = -1;
+        //central block
         board[3][3].status = pieceStatus.WHITE;
         board[4][4].status = pieceStatus.WHITE;      
         board[4][3].status = pieceStatus.BLACK;
@@ -67,14 +68,7 @@ public class board {
         round++;
         lastMove[0] = row;
         lastMove[1] = col;
-        if(name.priority == 1){
-            black++;
-            empty--;
-        }
-        else if(name.priority == 2){
-            white++;
-            empty--;
-        }
+        this.counter(name.symbolPiece,false);
     }
 
     boolean isfull(){
@@ -121,14 +115,7 @@ public class board {
             yp -= dy;
                 while(xp != x || yp != y) {
                     board[xp][yp].status = piece;
-                    if(piece == pieceStatus.BLACK){
-                        black++;
-                        white--;
-                    }
-                    else if(piece == pieceStatus.WHITE){
-                        white++;
-                        black--;
-                    }
+                    this.counter(piece, true);
                     xp -= dx;
                     yp -= dy;
                 }
@@ -143,5 +130,28 @@ public class board {
 
     private static boolean isValidPosition(int x, int y) {
         return x >= 0 && x < 8 && y >= 0 && y < 8;
+    }
+
+    private void counter(pieceStatus piece , boolean is_flipped){
+        if(is_flipped){
+            if(piece == pieceStatus.BLACK){
+                black++;
+                white--;
+            }
+            else if(piece == pieceStatus.WHITE){
+                white++;
+                black--;
+            }
+        }
+        else{
+            if(piece == pieceStatus.BLACK){
+                black++;
+                empty--;
+            }
+            else if(piece == pieceStatus.WHITE){
+                white++;
+                empty--;
+            }
+        }
     }
 }

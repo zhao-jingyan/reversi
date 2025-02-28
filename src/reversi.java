@@ -2,8 +2,8 @@ public class reversi {
     public static void main(String[] args){
         gamelogic game = new gamelogic();
         input terminal = new input();
-        player P1 = new player("Bill_Black", 1);
-        player P2 = new player("Walt_White", 2);
+        player P1 = new player("Bill_Black", pieceStatus.BLACK);
+        player P2 = new player("Walt_White", pieceStatus.WHITE);
         board board = new board(8,8);
         output screen = new output(board, P1, P2);
         game.startup(P1, P2, board);

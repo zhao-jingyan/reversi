@@ -14,10 +14,7 @@ public class piece {
     
     //update the move
     void update(player name){
-        if(name.priority == 1)
-            status = pieceStatus.BLACK;
-        else if(name.priority == 2)
-            status = pieceStatus.WHITE;
+            status = name.symbolPiece;
     }
 
 }
