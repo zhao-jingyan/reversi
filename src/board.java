@@ -23,6 +23,7 @@ public class board {
         }
         lastMove[0] = -1;
         lastMove[0] = -1;
+        
         //central block
         board[3][3].status = pieceStatus.WHITE;
         board[4][4].status = pieceStatus.WHITE;      
@@ -66,13 +67,18 @@ public class board {
 
     //flip the pieces
     boolean flip(int[] input) {
-        boolean ans = false;
+        //locate the piece
         int x = input[0] - 1;
         int y = input[1] - 1;
+
+        //set 8 directions
         int[][] directions = {
             {1, 0}, {-1, 0}, {0, 1}, {0, -1},
             {1, 1}, {-1, -1}, {1, -1}, {-1, 1}
         };
+
+        //ans == true means flipped
+        boolean ans = false;
         for (int[] dir : directions) {
             ans = this.flipbeam(dir, x, y) || ans;    //flipbeam should not be short-circuited
         }
@@ -80,12 +86,12 @@ public class board {
     }
 
     private boolean flipbeam(int[] direction, int x, int y) {
-        boolean ans = false;
         int xp = x;
         int yp = y;
         pieceStatus piece = board[xp][yp].status;
         int dx = direction[0];
         int dy = direction[1];
+        boolean ans = false;
         while(isValidPosition(xp + dx, yp + dy)){
             xp += dx;
             yp += dy;

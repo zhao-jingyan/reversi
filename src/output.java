@@ -19,6 +19,7 @@ public class output {
     //head
         System.out.printf("Black: %d\n",piece.black);
         System.out.printf("White: %d\n",piece.white);
+
     //first row
         System.out.printf(" ");
         for(int i = 0; i < 8; i++){
