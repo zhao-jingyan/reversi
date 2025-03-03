@@ -17,17 +17,17 @@ public class output {
     //clear
         clear();
     //head
-        System.out.printf("Black: %d\n",board.black);
-        System.out.printf("White: %d\n",board.white);
+        System.out.printf("Black: %d\n",piece.black);
+        System.out.printf("White: %d\n",piece.white);
     //first row
         System.out.printf(" ");
-        for(int i = 0; i < board.width; i++){
+        for(int i = 0; i < 8; i++){
             System.out.printf(" %c",(char)('A' + i));
         }
         System.out.printf("\n");
 
     //board
-        for(int row = 0; row < board.height; row++){
+        for(int row = 0; row < 8; row++){
             System.out.printf("%d ",row + 1);
             for(piece item : board.board[row]){
                 switch(item.status){
@@ -37,9 +37,9 @@ public class output {
                 }
             }
             //player info
-            if(row == board.height/2 - 1)
+            if(row == 3)
                 System.out.printf("   player[%s] %c\n",p1.name,p1.status == playerStatus.IDLE ? ' ' : '○');
-            else if(row == board.height/2)
+            else if(row == 4)
                 System.out.printf("   player[%s] %c\n",p2.name,p2.status == playerStatus.IDLE ? ' ' : '●');
             else
                 System.out.printf("\n");
@@ -48,11 +48,11 @@ public class output {
         System.out.printf("\n");
     //bottom info
         if(board.isfull()){
-            if(board.black > board.white)
+            if(piece.black > piece.white)
                 System.out.println("Black wins!");
-            else if(board.black < board.white)
+            else if(piece.black < piece.white)
                 System.out.println("White wins!");  
-            else if(board.black == board.white)
+            else if(piece.black == piece.white)
                 System.out.println("A tied game!");      
         }
         else{

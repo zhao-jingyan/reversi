@@ -1,34 +1,24 @@
 public class board {
-    int width;
-    int height;
     int round;
-    int white;
-    int black;
-    int empty;
     piece[][] board;
     boolean[][] valid;
     int[] lastMove;
 
     //construct an empty board with given size
-    board(int given_width,int given_height){
-        empty = 8 * 8 - 4;
-        white = 2;
-        black = 2;
-        width = given_width;
-        height = given_height;
-        board = new piece[height][width];
-        valid = new boolean[height][width];
+    board(){
+        board = new piece[8][8];
+        valid = new boolean[8][8];
         lastMove = new int[2];
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
                 valid[i][j] = true;
             }
         }
         round = 0;
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
                 board[i][j] = new piece();
-                board[i][j].makeEmpty();
+                board[i][j].remove();
             }
         }
         lastMove[0] = -1;
@@ -42,8 +32,6 @@ public class board {
         valid[4][4] = false;
         valid[4][3] = false;
         valid[3][4] = false;
-
-
     }
 
     //clear the board
@@ -51,10 +39,7 @@ public class board {
         round = 0;
         for(piece[] row: board)
             for(piece item: row)
-                item.makeEmpty();
-        white = 2;
-        black = 2;
-        empty = 8 * 8 - 4;
+                item.remove();
         board[3][3].status = pieceStatus.WHITE;
         board[4][4].status = pieceStatus.WHITE;      
         board[4][3].status = pieceStatus.BLACK;
@@ -63,12 +48,11 @@ public class board {
 
     //add a move, gamelogic will make sure the input is secure
     void add(player name , int row , int col){
-        board[row - 1][col - 1].update(name);
+        board[row - 1][col - 1].add(name);
         valid[row - 1][col - 1] = false;
         round++;
         lastMove[0] = row;
         lastMove[1] = col;
-        this.counter(name.symbolPiece,false);
     }
 
     boolean isfull(){
@@ -79,11 +63,6 @@ public class board {
                     ans = false;
         return ans;
     }
-
-    // boolean iswin(){
-    //     //winning condition met
-    //     return true;
-    // }
 
     //flip the pieces
     boolean flip(int[] input) {
@@ -114,8 +93,7 @@ public class board {
             xp -= dx;
             yp -= dy;
                 while(xp != x || yp != y) {
-                    board[xp][yp].status = piece;
-                    this.counter(piece, true);
+                    board[xp][yp].flip();
                     xp -= dx;
                     yp -= dy;
                 }
@@ -130,28 +108,5 @@ public class board {
 
     private static boolean isValidPosition(int x, int y) {
         return x >= 0 && x < 8 && y >= 0 && y < 8;
-    }
-
-    private void counter(pieceStatus piece , boolean is_flipped){
-        if(is_flipped){
-            if(piece == pieceStatus.BLACK){
-                black++;
-                white--;
-            }
-            else if(piece == pieceStatus.WHITE){
-                white++;
-                black--;
-            }
-        }
-        else{
-            if(piece == pieceStatus.BLACK){
-                black++;
-                empty--;
-            }
-            else if(piece == pieceStatus.WHITE){
-                white++;
-                empty--;
-            }
-        }
     }
 }

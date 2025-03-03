@@ -5,6 +5,7 @@ public class gamelogic{
         p1.status = playerStatus.MOVE;
         p2.status = playerStatus.IDLE;
         board.clear();
+        piece.initialize();
     }
 
     void handleMove(player p1, player p2, board board, int[] move){
