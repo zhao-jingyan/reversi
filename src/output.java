@@ -50,7 +50,7 @@ public class output {
 
         System.out.printf("\n");
     //bottom info
-        if(board.isfull()){
+        if(board.isfull() || hotspot.getSpotStatus() == spotstatus.END){
             if(piece.black > piece.white)
                 System.out.println("Black wins!");
             else if(piece.black < piece.white)
@@ -69,10 +69,11 @@ public class output {
     }
 
     //update screen info
-    public void update(board given_board, player given_p1, player given_p2){
+    public void update(board given_board, player given_p1, player given_p2, hotspot spot){
         board = given_board;
         p1 = given_p1;
         p2 = given_p2;
+        hotspot = spot;
     }
 
     private static void clear() {

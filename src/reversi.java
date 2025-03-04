@@ -4,19 +4,20 @@ public class reversi {
         player P1 = new player("Bill_Black", piecetype.BLACK);
         player P2 = new player("Walt_White", piecetype.WHITE);
         board board = new board();
-        hotspot hotspot = new hotspot(P1, P2);
-        output screen = new output(board, hotspot, P1, P2);
+        hotspot spot = new hotspot(P1, P2);
+        output screen = new output(board, spot, P1, P2);
 
-        hotspot.initialize();
+        spot.initialize();
         board.clear();
-
-        while(!board.isfull()){
+        
+        while(!board.isfull() && spot.getSpotStatus() != spotstatus.END){
             screen.print();
             int[] move = terminal.getInput();
-            hotspot.makeMove(board, move);
-            board.refreshValid(hotspot.getChargePlayer().getPiecetype());
-            screen.update(board,P1,P2);
+            spot.makeMove(board, move);
+            spot.afterMove(board);
+            screen.update(board,P1,P2,spot);
         }
         screen.print();
+
     }
 }

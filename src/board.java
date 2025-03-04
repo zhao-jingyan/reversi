@@ -32,6 +32,7 @@ public final class board {
         board[3][4].status = piecetype.BLACK;
     }
 
+
     //add a move, gamelogic will make sure the input is secure
     void add(player name ,int[] move){
         board[move[0]][move[1]].add(name);
@@ -40,7 +41,7 @@ public final class board {
     boolean isfull(){
         for(piece[] row: board)
             for(piece item: row)
-                if(item.status == piecetype.EMPTY)
+                if(item.status == piecetype.EMPTY || item.status == piecetype.VALID)
                     return false;
         return true;
     }
@@ -140,7 +141,7 @@ public final class board {
     }
 
     public boolean isValid(int[] move){
-        return board[move[0]][move[1]].getStatus() == piecetype.VALID;
+        return move[0] != -1 && board[move[0]][move[1]].getStatus() == piecetype.VALID;
     }
 
     public boolean noValid(){

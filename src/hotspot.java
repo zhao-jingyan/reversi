@@ -24,16 +24,18 @@ public class hotspot {
 
     }
 
-    void makeMove(board board, int[] move){
-        if(move[0] != -1){
-            if(board.noValid() && status == spotstatus.JUMP){
+    void afterMove(board board){
+        board.refreshValid(player_charge.getPiecetype());
+        if(board.noValid() && status == spotstatus.MOVE){
+            this.switchSpot();
+            board.refreshValid(player_charge.getPiecetype());
+            if(board.noValid())
                 status = spotstatus.END;
-            }
-            else if(board.noValid() && status == spotstatus.MOVE){
-                this.switchSpot();
-                status = spotstatus.JUMP;
-            }
-            else if(board.isValid(move)){
+        }
+    }
+
+    void makeMove(board board, int[] move){
+            if(board.isValid(move)){
                 board.add(player_charge,move);
                 board.flip(move);
                 this.switchSpot();
@@ -43,9 +45,7 @@ public class hotspot {
                 status = spotstatus.INVALID;
             }
         }
-        else
-            status = spotstatus.INVALID;
-    }
+    
 
     //switch player_charge and player_idle
     private void switchSpot(){
