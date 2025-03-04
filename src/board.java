@@ -1,9 +1,8 @@
 public final class board {
     int round;
-    piece[][] board;
-    boolean[][] valid;
-    int[] lastMove;
-
+    piece[][] board;  //store the piece info
+    boolean[][] valid; //store the valid info
+    
     //construct an empty board with given size
     board(){
         round = 0;
@@ -22,11 +21,6 @@ public final class board {
                 valid[i][j] = true;
             }
         }
-
-        //new last move
-        lastMove = new int[2];
-        lastMove[0] = -1;
-        lastMove[0] = -1;
 
         //clear board
         this.clear();
@@ -58,8 +52,6 @@ public final class board {
         board[row - 1][col - 1].add(name);
         valid[row - 1][col - 1] = false;
         round++;
-        lastMove[0] = row;
-        lastMove[1] = col;
     }
 
     boolean isfull(){

@@ -39,8 +39,8 @@ public class output {
             }
             //player info
             switch (row) {
-                case 3 -> System.out.printf("   player[%s] %c\n",p1.name,p1.status == playerStatus.IDLE ? ' ' : '○');
-                case 4 -> System.out.printf("   player[%s] %c\n",p2.name,p2.status == playerStatus.IDLE ? ' ' : '●');
+                case 3 -> System.out.printf("   player[%s] %c\n",p1.showName(),p1.status == playerStatus.IDLE ? ' ' : '○');
+                case 4 -> System.out.printf("   player[%s] %c\n",p2.showName(),p2.status == playerStatus.IDLE ? ' ' : '●');
                 default -> System.out.printf("\n");
             }
         }
@@ -61,7 +61,7 @@ public class output {
                 System.out.println("Invalid postion! Please retry!");
 
             //reminder
-            System.out.printf("Player [%s] please enter your move:",p1.status != playerStatus.IDLE ? p1.name : p2.name);
+            System.out.printf("Player [%s] please enter your move:",p1.status != playerStatus.IDLE ? p1.showName() : p2.showName());
         }
     }
 

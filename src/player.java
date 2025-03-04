@@ -1,5 +1,5 @@
 public class player {
-    String name;
+    final String name;
     pieceStatus symbolPiece; 
     playerStatus status;
 

@@ -6,16 +6,16 @@ public class reversi {
         player P2 = new player("Walt_White", pieceStatus.WHITE);
         board board = new board();
         output screen = new output(board, P1, P2);
+        
         game.startup(P1, P2, board);
-        while(true){
+        while(!board.isfull()){
             screen.print();
-            if(board.isfull())
-                break;
             P1.restoreStatus();
             P2.restoreStatus();
             int[] move = terminal.getInput();
             game.handleMove(P1, P2, board, move);
             screen.update(board,P1,P2);
         }
+        screen.print();
     }
 }
