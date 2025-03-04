@@ -1,3 +1,7 @@
+/*
+ * player is a class that contains a name and a piece type
+ * all the actions are conducted by hotspot, so player only contains information
+ */
 public class player {
     private final String name;
     private final piecetype piecetype; 
@@ -8,10 +12,12 @@ public class player {
         piecetype = symbol;
     }
 
+    //get the name of the player
     public String getName(){
         return name;
     }
 
+    //get the piece type of the player
     public piecetype getPiecetype(){
         return piecetype;
     }

@@ -1,23 +1,30 @@
+/*
+ * main class, conduct the game
+ */
+
 public class reversi {
     public static void main(String[] args){
-        input terminal = new input();
+        //conductors, creating essential objects
+        board board = new board();
         player P1 = new player("Bill_Black", piecetype.BLACK);
         player P2 = new player("Walt_White", piecetype.WHITE);
-        board board = new board();
         hotspot spot = new hotspot(P1, P2);
-        output screen = new output(board, spot, P1, P2);
+        input terminal = new input();
+        output screen = new output();
 
+        //initialize game
         spot.initialize();
         board.clear();
         
+        //main loop
         while(!board.isfull() && spot.getSpotStatus() != spotstatus.END){
-            screen.print();
+            screen.print(board,P1,P2,spot);
             int[] move = terminal.getInput();
             spot.makeMove(board, move);
-            spot.afterMove(board);
-            screen.update(board,P1,P2,spot);
+            spot.tryToSwap(board);
         }
-        screen.print();
 
+        //ending, print again
+        screen.print(board,P1,P2,spot);
     }
 }

@@ -1,4 +1,7 @@
-//stands for three status of the piece
+/*
+ * piecetype is a enum that contains the type of the piece
+ * it has a method to get the opposite type
+ */
 public enum piecetype {
     WHITE,BLACK,EMPTY,VALID;
 
