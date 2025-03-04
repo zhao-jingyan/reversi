@@ -33,7 +33,7 @@ public class output {
         for(int row = 0; row < 8; row++){
             System.out.printf("%d ",row + 1);
             for(piece item : board.board[row]){
-                switch(item.status){
+                switch(item.getStatus()){
                     case EMPTY -> System.out.printf("· ");
                     case BLACK -> System.out.printf("○ ");
                     case WHITE -> System.out.printf("● ");
@@ -42,8 +42,8 @@ public class output {
             }
             //player info
             switch (row) {
-                case 3 -> System.out.printf("   player[%s] %c\n" , p1.getName() , hotspot.getChargePlayer().getPiecetype() == piecetype.BLACK ? ' ' : '○');
-                case 4 -> System.out.printf("   player[%s] %c\n" , p2.getName() , hotspot.getChargePlayer().getPiecetype() == piecetype.WHITE ? ' ' : '●');
+                case 3 -> System.out.printf("   player[%s] %c\n" , p1.getName() , hotspot.getChargePlayer().getPiecetype() == piecetype.BLACK ? '○' : ' ');
+                case 4 -> System.out.printf("   player[%s] %c\n" , p2.getName() , hotspot.getChargePlayer().getPiecetype() == piecetype.WHITE ? '●' : ' ');
                 default -> System.out.printf("\n");
             }
         }

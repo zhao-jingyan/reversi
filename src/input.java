@@ -36,12 +36,12 @@ public class input {
 
     private static int[] formatCoordinate(String input){
         int[] ans = new int[2]; //first is row num; second is col num
-        ans[0] = input.charAt(1) - '0';
+        ans[0] = input.charAt(1) - '1';
 
         if(input.charAt(0) <= 'H' && input.charAt(0) >= 'A')
-            ans[1] = input.charAt(0) - 'A' + 1;
+            ans[1] = input.charAt(0) - 'A';
         else if(input.charAt(0) <= 'h' && input.charAt(0) >= 'a')
-            ans[1] = input.charAt(0) - 'a' + 1;
+            ans[1] = input.charAt(0) - 'a';
         
         return ans;
     }
