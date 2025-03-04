@@ -1,4 +1,4 @@
-public class board {
+public final class board {
     int round;
     piece[][] board;
     boolean[][] valid;
@@ -6,33 +6,30 @@ public class board {
 
     //construct an empty board with given size
     board(){
+        round = 0;
+        //new board
         board = new piece[8][8];
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                board[i][j] = new piece();
+            }
+        }
+
+        //new valid
         valid = new boolean[8][8];
-        lastMove = new int[2];
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 valid[i][j] = true;
             }
         }
-        round = 0;
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                board[i][j] = new piece();
-                board[i][j].remove();
-            }
-        }
+
+        //new last move
+        lastMove = new int[2];
         lastMove[0] = -1;
         lastMove[0] = -1;
-        
-        //central block
-        board[3][3].status = pieceStatus.WHITE;
-        board[4][4].status = pieceStatus.WHITE;      
-        board[4][3].status = pieceStatus.BLACK;
-        board[3][4].status = pieceStatus.BLACK;
-        valid[3][3] = false;
-        valid[4][4] = false;
-        valid[4][3] = false;
-        valid[3][4] = false;
+
+        //clear board
+        this.clear();
     }
 
     //clear the board
@@ -41,10 +38,19 @@ public class board {
         for(piece[] row: board)
             for(piece item: row)
                 item.remove();
+        this.placeCenter();
+    }
+
+    //place center block
+    private void placeCenter(){
         board[3][3].status = pieceStatus.WHITE;
         board[4][4].status = pieceStatus.WHITE;      
         board[4][3].status = pieceStatus.BLACK;
         board[3][4].status = pieceStatus.BLACK;
+        valid[3][3] = false;
+        valid[4][4] = false;
+        valid[4][3] = false;
+        valid[3][4] = false;
     }
 
     //add a move, gamelogic will make sure the input is secure

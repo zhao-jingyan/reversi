@@ -38,12 +38,11 @@ public class output {
                 }
             }
             //player info
-            if(row == 3)
-                System.out.printf("   player[%s] %c\n",p1.name,p1.status == playerStatus.IDLE ? ' ' : '○');
-            else if(row == 4)
-                System.out.printf("   player[%s] %c\n",p2.name,p2.status == playerStatus.IDLE ? ' ' : '●');
-            else
-                System.out.printf("\n");
+            switch (row) {
+                case 3 -> System.out.printf("   player[%s] %c\n",p1.name,p1.status == playerStatus.IDLE ? ' ' : '○');
+                case 4 -> System.out.printf("   player[%s] %c\n",p2.name,p2.status == playerStatus.IDLE ? ' ' : '●');
+                default -> System.out.printf("\n");
+            }
         }
 
         System.out.printf("\n");

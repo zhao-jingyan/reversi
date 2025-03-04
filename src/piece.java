@@ -1,4 +1,4 @@
-public class piece {
+public final class piece {
     pieceStatus status;
     public static int black = 0;
     public static int white = 0;
