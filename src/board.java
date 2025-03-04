@@ -1,11 +1,9 @@
 public final class board {
-    int round;
     piece[][] board;  //store the piece info
     boolean[][] valid; //store the valid info
-    
+
     //construct an empty board with given size
     board(){
-        round = 0;
         //new board
         board = new piece[8][8];
         for (int i = 0; i < 8; i++) {
@@ -28,7 +26,6 @@ public final class board {
 
     //clear the board
     void clear(){
-        round = 0;
         for(piece[] row: board)
             for(piece item: row)
                 item.remove();
@@ -37,10 +34,10 @@ public final class board {
 
     //place center block
     private void placeCenter(){
-        board[3][3].status = pieceStatus.WHITE;
-        board[4][4].status = pieceStatus.WHITE;      
-        board[4][3].status = pieceStatus.BLACK;
-        board[3][4].status = pieceStatus.BLACK;
+        board[3][3].status = piecetype.WHITE;
+        board[4][4].status = piecetype.WHITE;      
+        board[4][3].status = piecetype.BLACK;
+        board[3][4].status = piecetype.BLACK;
         valid[3][3] = false;
         valid[4][4] = false;
         valid[4][3] = false;
@@ -48,17 +45,16 @@ public final class board {
     }
 
     //add a move, gamelogic will make sure the input is secure
-    void add(player name , int row , int col){
-        board[row - 1][col - 1].add(name);
-        valid[row - 1][col - 1] = false;
-        round++;
+    void add(player name ,int[] move){
+        board[move[0] - 1][move[1] - 1].add(name);
+        valid[move[0] - 1][move[1] - 1] = false;
     }
 
     boolean isfull(){
         boolean ans = true;
         for(piece[] row: board)
             for(piece item: row)
-                if(item.status == pieceStatus.EMPTY)
+                if(item.status == piecetype.EMPTY)
                     ans = false;
         return ans;
     }
@@ -86,7 +82,7 @@ public final class board {
     private boolean flipbeam(int[] direction, int x, int y) {
         int xp = x;
         int yp = y;
-        pieceStatus piece = board[xp][yp].status;
+        piecetype piece = board[xp][yp].status;
         int dx = direction[0];
         int dy = direction[1];
         boolean ans = false;
@@ -104,7 +100,7 @@ public final class board {
                 ans = true;
                 break;
             }
-            else if(board[xp][yp].status == pieceStatus.EMPTY)
+            else if(board[xp][yp].status == piecetype.EMPTY)
                 break;
         }
         return ans;
@@ -112,5 +108,12 @@ public final class board {
 
     private static boolean isValidPosition(int x, int y) {
         return x >= 0 && x < 8 && y >= 0 && y < 8;
+    }
+
+    private void reFreshValid(){
+        for(int i = 0; i < 8; i++)
+            for(int j = 0; j < 8; j++){
+                
+            }
     }
 }

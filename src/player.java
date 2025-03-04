@@ -1,21 +1,18 @@
 public class player {
-    final String name;
-    pieceStatus symbolPiece; 
-    playerStatus status;
+    private final String name;
+    private final piecetype piecetype; 
 
     //construct a player with given name and pieceType
-    player(String given_name,pieceStatus symbol){
+    player(String given_name,piecetype symbol){
         name = given_name;
-        symbolPiece = symbol;
-        status = playerStatus.IDLE;
+        piecetype = symbol;
     }
 
-    public String showName(){
+    public String getName(){
         return name;
     }
 
-    void restoreStatus(){
-        if(status == playerStatus.INVALID)
-            status = playerStatus.MOVE;
+    public piecetype getPiecetype(){
+        return piecetype;
     }
 }

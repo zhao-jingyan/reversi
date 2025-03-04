@@ -2,16 +2,18 @@ import java.io.IOException;
 
 public class output {
     board board;//get a copy of gameboard
+    hotspot hotspot;
     player p1;
     player p2;
 
     //construct a screen
-    output(board given_board, player given_p1, player given_p2){
+    output(board given_board, hotspot given_hotspot, player given_p1, player given_p2){
         board = given_board;
+        hotspot = given_hotspot;
         p1 = given_p1;
         p2 = given_p2;
     }
-
+    
     //print all the information
     public void print(){
     //clear
@@ -35,12 +37,13 @@ public class output {
                     case EMPTY -> System.out.printf("· ");
                     case BLACK -> System.out.printf("○ ");
                     case WHITE -> System.out.printf("● ");
+                    case VALID -> System.out.printf("x ");
                 }
             }
             //player info
             switch (row) {
-                case 3 -> System.out.printf("   player[%s] %c\n",p1.showName(),p1.status == playerStatus.IDLE ? ' ' : '○');
-                case 4 -> System.out.printf("   player[%s] %c\n",p2.showName(),p2.status == playerStatus.IDLE ? ' ' : '●');
+                case 3 -> System.out.printf("   player[%s] %c\n",p1.getName(),hotspot.getChargePiece() == piecetype.BLACK ? ' ' : '○');
+                case 4 -> System.out.printf("   player[%s] %c\n",p2.getName(),hotspot.getChargePiece() == piecetype.WHITE ? ' ' : '●');
                 default -> System.out.printf("\n");
             }
         }
@@ -57,7 +60,7 @@ public class output {
         }
         else{
         //error info
-            if(p1.status == playerStatus.INVALID || p2.status == playerStatus.INVALID)
+            if(hotspot.getSpotStatus() == spotstatus.INVALID)
                 System.out.println("Invalid postion! Please retry!");
 
             //reminder

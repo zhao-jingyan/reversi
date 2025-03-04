@@ -1,10 +1,10 @@
 public final class piece {
-    pieceStatus status;
+    piecetype status;
     public static int black = 0;
     public static int white = 0;
     //construct an empty piece
     piece(){
-        status = pieceStatus.EMPTY;
+        status = piecetype.EMPTY;
     }
 
     static void initialize(){
@@ -14,26 +14,26 @@ public final class piece {
     
     //make a piece empty
     void remove(){
-        status = pieceStatus.EMPTY;
+        status = piecetype.EMPTY;
     }
     
     //update the move
     void add(player name){
-            status = name.symbolPiece;
-            if(name.symbolPiece == pieceStatus.BLACK)
+            status = name.getPiecetype();
+            if(name.getPiecetype() == piecetype.BLACK)
                 black++;
-            else if(name.symbolPiece == pieceStatus.WHITE)
+            else if(name.getPiecetype() == piecetype.WHITE)
                 white++;
     }
 
     void flip(){
-        if(status == pieceStatus.BLACK){
-            status = pieceStatus.WHITE;
+        if(status == piecetype.BLACK){
+            status = piecetype.WHITE;
             black--;
             white++;
         }
-        else if(status == pieceStatus.WHITE){
-            status = pieceStatus.BLACK;
+        else if(status == piecetype.WHITE){
+            status = piecetype.BLACK;
             white--;
             black++;
         }
