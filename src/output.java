@@ -42,8 +42,8 @@ public class output {
             }
             //player info
             switch (row) {
-                case 3 -> System.out.printf("   player[%s] %c\n",p1.getName(),hotspot.getChargePiece() == piecetype.BLACK ? ' ' : '○');
-                case 4 -> System.out.printf("   player[%s] %c\n",p2.getName(),hotspot.getChargePiece() == piecetype.WHITE ? ' ' : '●');
+                case 3 -> System.out.printf("   player[%s] %c\n" , p1.getName() , hotspot.getChargePlayer().getPiecetype() == piecetype.BLACK ? ' ' : '○');
+                case 4 -> System.out.printf("   player[%s] %c\n" , p2.getName() , hotspot.getChargePlayer().getPiecetype() == piecetype.WHITE ? ' ' : '●');
                 default -> System.out.printf("\n");
             }
         }
@@ -64,7 +64,7 @@ public class output {
                 System.out.println("Invalid postion! Please retry!");
 
             //reminder
-            System.out.printf("Player [%s] please enter your move:",p1.status != playerStatus.IDLE ? p1.showName() : p2.showName());
+            System.out.printf("Player [%s] please enter your move:",hotspot.getChargePlayer().getName());
         }
     }
 

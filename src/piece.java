@@ -39,5 +39,8 @@ public final class piece {
         }
     }
 
+    piecetype getStatus(){
+        return status;
+    }
 }
 
