@@ -50,4 +50,3 @@ public class input {
         return ans;
     }
 }
-

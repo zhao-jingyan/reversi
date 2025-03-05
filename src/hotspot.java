@@ -74,9 +74,3 @@ public class hotspot {
         return status;
     }
 }
-
-
-
-
-
-

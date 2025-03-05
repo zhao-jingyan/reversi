@@ -78,7 +78,6 @@ public class output {
                 // 在其他系统中，使用 clear 命令清除控制台
                 new ProcessBuilder("bash", "-c", "clear").inheritIO().start().waitFor();
             }
-        } catch (IOException | InterruptedException e) {
-        }
+        } catch (IOException | InterruptedException e) {}
     }
 }
