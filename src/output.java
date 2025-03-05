@@ -54,19 +54,20 @@ public class output {
         System.out.printf("\n");
 
         //bottom info
-        if(games[1].spot.getSpotStatus() == spotstatus.END &&
-           games[2].spot.getSpotStatus() == spotstatus.END &&
-           games[3].spot.getSpotStatus() == spotstatus.END){
-            System.out.println("All games end!");
-        }
-        else if(board.isfull() || hotspot.getSpotStatus() == spotstatus.END){
+        if(board.isfull() || hotspot.getSpotStatus() == spotstatus.END){
             if(games[0].board.getBlack() > games[0].board.getWhite())
-                System.out.println("Black wins!");
+            System.out.println("Black wins!");
             else if(games[0].board.getBlack() < games[0].board.getWhite())
-                System.out.println("White wins!");  
+            System.out.println("White wins!");  
             else if(games[0].board.getBlack() == games[0].board.getWhite())
-                System.out.println("A tied game!");
-            System.out.println("Going to board:");
+            System.out.println("A tied game!");
+        
+            if(games[1].spot.getSpotStatus() == spotstatus.END &&
+            games[2].spot.getSpotStatus() == spotstatus.END &&
+            games[3].spot.getSpotStatus() == spotstatus.END)
+                System.out.println("All games end!");
+            else
+                System.out.printf("Going to board:");
         }
         else{
             //error info

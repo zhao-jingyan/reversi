@@ -272,3 +272,4 @@ classDiagram
 ## P. S.
 
 重写中使用了llm辅助，生成了一些函数和注释。readme文档中类的关系说明，uml图由llm生成  
+编辑调试于macos，不确定clear操作在win平台是否可行
