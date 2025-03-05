@@ -9,17 +9,21 @@
  */
 
 public class hotspot {
+    private final player p1;
+    private final player p2;
     private player player_charge;
     private player player_idle;
     private spotstatus status;
 
     //construct a hotspot, black player stay in spot
     hotspot(player p1, player p2){
-        if(p1.getPiecetype() == piecetype.BLACK){
+        this.p1 = p1;
+        this.p2 = p2;
+        if(p1.getPiecetype() == piecestatus.BLACK){
             player_charge = p1;
             player_idle = p2;
         }
-        else if(p2.getPiecetype() == piecetype.WHITE){
+        else if(p2.getPiecetype() == piecestatus.WHITE){
             player_idle = p1; 
             player_charge = p2;
         }
@@ -28,7 +32,7 @@ public class hotspot {
 
     //initialize the spot so black is in spot
     void initialize(){
-        if(player_charge.getPiecetype() == piecetype.WHITE)
+        if(player_charge.getPiecetype() == piecestatus.WHITE)
             this.switchSpot();
 
     }
@@ -73,4 +77,15 @@ public class hotspot {
     public spotstatus getSpotStatus(){
         return status;
     }
+
+    //get the player p1
+    public player getP1(){
+        return p1;
+    }
+
+    //get the player p2
+    public player getP2(){
+        return p2;
+    }
+
 }

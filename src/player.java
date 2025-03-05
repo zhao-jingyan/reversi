@@ -4,10 +4,10 @@
  */
 public class player {
     private final String name;
-    private final piecetype piecetype; 
+    private final piecestatus piecetype; 
 
     //construct a player with given name and pieceType
-    player(String given_name,piecetype symbol){
+    player(String given_name,piecestatus symbol){
         name = given_name;
         piecetype = symbol;
     }
@@ -18,7 +18,7 @@ public class player {
     }
 
     //get the piece type of the player
-    public piecetype getPiecetype(){
+    public piecestatus getPiecetype(){
         return piecetype;
     }
 }

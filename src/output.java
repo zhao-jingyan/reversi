@@ -11,13 +11,19 @@ public class output {
     }
     
     //print all the information
-    public void print(board board, player p1, player p2, hotspot hotspot){
+    public void print(game[] games){
+        board board = games[0].board;
+        player p1 = games[0].spot.getP1();
+        player p2 = games[0].spot.getP2();
+        hotspot hotspot = games[0].spot;
+
         //clear
         clear();
 
         //head
-        System.out.printf("Black: %d\n",piece.getBlackNum());
-        System.out.printf("White: %d\n",piece.getWhiteNum());
+        System.out.printf("Game: %d\n", games[0].gameNum);
+        System.out.printf("Black: %d\n",games[0].board.getBlack());
+        System.out.printf("White: %d\n",games[0].board.getWhite());
 
         //first row
         System.out.printf(" ");
@@ -39,8 +45,8 @@ public class output {
             }
             //player info
             switch (row){
-                case 3 -> System.out.printf("   player[%s] %c\n" , p1.getName() , hotspot.getChargePlayer().getPiecetype() == piecetype.BLACK ? '○' : ' ');
-                case 4 -> System.out.printf("   player[%s] %c\n" , p2.getName() , hotspot.getChargePlayer().getPiecetype() == piecetype.WHITE ? '●' : ' ');
+                case 3 -> System.out.printf("   player[%s] %c\n" , p1.getName() , hotspot.getChargePlayer().getPiecetype() == piecestatus.BLACK ? '○' : ' ');
+                case 4 -> System.out.printf("   player[%s] %c\n" , p2.getName() , hotspot.getChargePlayer().getPiecetype() == piecestatus.WHITE ? '●' : ' ');
                 default -> System.out.printf("\n");
             }
         }
@@ -48,13 +54,19 @@ public class output {
         System.out.printf("\n");
 
         //bottom info
-        if(board.isfull() || hotspot.getSpotStatus() == spotstatus.END){
-            if(piece.getBlackNum() > piece.getWhiteNum())
+        if(games[1].spot.getSpotStatus() == spotstatus.END &&
+           games[2].spot.getSpotStatus() == spotstatus.END &&
+           games[3].spot.getSpotStatus() == spotstatus.END){
+            System.out.println("All games end!");
+        }
+        else if(board.isfull() || hotspot.getSpotStatus() == spotstatus.END){
+            if(games[0].board.getBlack() > games[0].board.getWhite())
                 System.out.println("Black wins!");
-            else if(piece.getBlackNum() < piece.getWhiteNum())
+            else if(games[0].board.getBlack() < games[0].board.getWhite())
                 System.out.println("White wins!");  
-            else if(piece.getBlackNum() == piece.getWhiteNum())
-                System.out.println("A tied game!");      
+            else if(games[0].board.getBlack() == games[0].board.getWhite())
+                System.out.println("A tied game!");
+            System.out.println("Going to board:");
         }
         else{
             //error info
@@ -62,7 +74,7 @@ public class output {
                 System.out.println("Invalid postion! Please retry!");
 
             //reminder
-            System.out.printf("Player [%s] please enter your move:",hotspot.getChargePlayer().getName());
+            System.out.printf("Player [%s] please enter your move or switch board:",hotspot.getChargePlayer().getName());
         }
     }
 

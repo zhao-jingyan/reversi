@@ -22,9 +22,13 @@ public class input {
         int [] coordinates = new int[2];
         if (String_is_valid(inputString))
             coordinates = formatCoordinate(inputString);
-        else{
+        else if(String_is_valid_num(inputString)){
             coordinates[0] = -1;
-            coordinates[1] = -1;
+            coordinates[1] = Integer.parseInt(inputString);
+        }
+        else{
+            coordinates[0] = -2;
+            coordinates[1] = -2;
         }
         return coordinates;
     }
@@ -49,4 +53,10 @@ public class input {
             ans[1] = input.charAt(0) - 'a';
         return ans;
     }
+
+    private static boolean String_is_valid_num(String testee){
+        return "1".equals(testee) || "2".equals(testee) || "3".equals(testee);
+    }
+
+
 }

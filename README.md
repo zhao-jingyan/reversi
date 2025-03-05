@@ -6,41 +6,48 @@
     ├── README.md
     ├── bin
     │   ├── board.class
+    │   ├── game.class
     │   ├── hotspot.class
     │   ├── input.class
     │   ├── output$1.class
     │   ├── output.class
     │   ├── piece.class
-    │   ├── piecetype.class
+    │   ├── piecestatus.class
     │   ├── player.class
     │   ├── reversi.class
     │   ├── reversi.jar
     │   └── spotstatus.class
     ├── oldfiles
     │   ├── README_oldversion1.0.md
-    │   └── pic_v1
+    │   ├── pic_v1
+    │   │   ├── screenshot1.png
+    │   │   ├── screenshot2.png
+    │   │   ├── screenshot3.png
+    │   │   ├── screenshot4.png
+    │   │   ├── screenshot5.png
+    │   │   └── screenshot6.png
+    │   └── pic_v2
     │       ├── screenshot1.png
     │       ├── screenshot2.png
-    │       ├── screenshot3.png
-    │       ├── screenshot4.png
-    │       ├── screenshot5.png
-    │       └── screenshot6.png
+    │       └── screenshot3.png
     ├── pic
     │   ├── screenshot1.png
     │   ├── screenshot2.png
-    │   └── screenshot3.png
+    │   ├── screenshot3.png
+    │   └── screenshot4.png
     └── src
         ├── board.java
+        ├── game.java
         ├── hotspot.java
         ├── input.java
         ├── output.java
         ├── piece.java
-        ├── piecetype.java
+        ├── piecestatus.java
         ├── player.java
         ├── reversi.java
         └── spotstatus.java
-
-    6 directories, 31 files
+    
+    7 directories, 37 files
 
 ---
 
@@ -85,6 +92,12 @@
     spotstatus：游戏状态枚举
         - 定义游戏状态：INVALID（非法移动）/MOVE（正常移动）/END（游戏结束）
         - 用于控制游戏流程
+
+    game：游戏类
+        - 管理单个游戏实例
+        - 包含棋盘和游戏状态
+        - 处理游戏逻辑和状态转换
+        - 提供游戏操作接口
 
 ---
 
@@ -139,12 +152,21 @@ classDiagram
         +getInput() int[]
         -String_is_valid(String) boolean
         -formatCoordinate(String) int[]
+        -String_is_valid_num(String) boolean
     }
 
     class output {
         +output()
-        +print(board, player, player, hotspot)
+        +print(game[])
         -clear()
+    }
+
+    class game {
+        -board board
+        -hotspot hotspot
+        -int gameNum
+        +game(String, String)
+        +makeMove(int[])
     }
 
     class board {
@@ -155,27 +177,26 @@ classDiagram
         +add(player, int[])
         +flip(int[])
         -flipbeam(int[], int, int)
-        +refreshValid(piecetype)
-        -isValidPosition(piecetype, int, int)
-        -canFlipInDirection(piecetype, int, int, int[])
+        +refreshValid(piecestatus)
+        -isValidPosition(piecestatus, int, int)
+        -canFlipInDirection(piecestatus, int, int, int[])
         +isValid(int[])
         +noValid()
         +isfull()
+        +getWhite()
+        +getBlack()
     }
 
     class piece {
-        -piecetype status
-        +static int black
-        +static int white
+        -piecestatus status
         +piece()
-        +static initialize()
         +remove()
         +add(player)
         +flip()
         +getStatus()
     }
 
-    class piecetype {
+    class piecestatus {
         <<enumeration>>
         BLACK
         WHITE
@@ -186,8 +207,8 @@ classDiagram
 
     class player {
         -String name
-        -piecetype type
-        +player(String, piecetype)
+        -piecestatus type
+        +player(String, piecestatus)
         +getName()
         +getPiecetype()
     }
@@ -196,12 +217,17 @@ classDiagram
         -player p1
         -player p2
         -player chargePlayer
+        -player idlePlayer
         -spotstatus status
         +hotspot(player, player)
         +initialize()
         +makeMove(board, int[])
+        +tryToSwap(board)
+        -switchSpot()
         +getChargePlayer()
         +getSpotStatus()
+        +getP1()
+        +getP2()
     }
 
     class spotstatus {
@@ -213,18 +239,15 @@ classDiagram
 
     reversi ..> input
     reversi ..> output
-    reversi ..> board
-    reversi ..> player
-    reversi ..> hotspot
-    output ..> board
-    output ..> hotspot
-    output ..> player
+    reversi ..> game
+    output ..> game
+    game --> board
+    game --> hotspot
     board --> piece
-    piece --> piecetype
-    player --> piecetype
+    piece --> piecestatus
+    player --> piecestatus
     hotspot --> player
     hotspot --> spotstatus
-    board ..> player
     hotspot ..> board
 ```
 
@@ -242,6 +265,10 @@ classDiagram
 
 ![screenshot3](./pic/screenshot3.png)
 
-## P.S
+### 切换棋盘
 
-重写中使用了llm辅助，生成了一些函数，大量注释。readme文档中类的关系说明，uml图由llm生成  
+![screenshot4](./pic/screenshot4.png)
+
+## P. S.
+
+重写中使用了llm辅助，生成了一些函数和注释。readme文档中类的关系说明，uml图由llm生成  
