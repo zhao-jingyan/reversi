@@ -1,3 +1,5 @@
+package reversi.core.game;
+
 /*
  * spot status is readed so the game can now what's happening
  * INVALID indicates last move is invalid, a new move needed
@@ -6,5 +8,5 @@
  */
 
 public enum spotstatus {
-    INVALID,MOVE,END;
+    MOVE, INVALID, END;
 }

@@ -4,19 +4,26 @@
 
     .
     ├── README.md
+    ├── README.pdf
     ├── bin
-    │   ├── board.class
-    │   ├── game.class
-    │   ├── hotspot.class
-    │   ├── input.class
-    │   ├── output$1.class
-    │   ├── output.class
-    │   ├── piece.class
-    │   ├── piecestatus.class
-    │   ├── player.class
-    │   ├── reversi.class
-    │   ├── reversi.jar
-    │   └── spotstatus.class
+    │   └── reversi
+    │       ├── core
+    │       │   └── game
+    │       │       ├── board
+    │       │       │   ├── board.class
+    │       │       │   ├── piece.class
+    │       │       │   └── piecestatus.class
+    │       │       ├── game.class
+    │       │       ├── spot
+    │       │       │   ├── hotspot.class
+    │       │       │   └── player.class
+    │       │       └── spotstatus.class
+    │       ├── reversi.class
+    │       └── ui
+    │           ├── console
+    │           │   ├── input.class
+    │           │   └── output.class
+    │           └── gui
     ├── oldfiles
     │   ├── README_oldversion1.0.md
     │   ├── pic_v1
@@ -36,123 +43,200 @@
     │   ├── screenshot3.png
     │   └── screenshot4.png
     └── src
-        ├── board.java
-        ├── game.java
-        ├── hotspot.java
-        ├── input.java
-        ├── output.java
-        ├── piece.java
-        ├── piecestatus.java
-        ├── player.java
-        ├── reversi.java
-        └── spotstatus.java
+        └── reversi
+            ├── core
+            │   └── game
+            │       ├── board
+            │       │   ├── board.java
+            │       │   ├── piece.java
+            │       │   └── piecestatus.java
+            │       ├── game.java
+            │       ├── spot
+            │       │   ├── hotspot.java
+            │       │   └── player.java
+            │       └── spotstatus.java
+            ├── reversi.java
+            └── ui
+                ├── console
+                │   ├── input.java
+                │   └── output.java
+                └── gui
     
-    7 directories, 37 files
+    23 directories, 36 files
 
 ---
 
 ## 类的功能分解
 
-    board：棋盘类
-        - 维护 8x8 的棋盘状态
-        - 处理棋子的放置和翻转
-        - 计算每个位置的有效性
-        - 提供棋盘状态查询功能
+### 核心游戏逻辑 (Core Game Logic)
+1. `game` 类：游戏主控制器
+    - 管理单个游戏实例
+    - 协调棋盘和玩家操作
+    - 提供游戏状态查询接口
+    - 处理游戏进程控制
 
-    piece：棋子类
-        - 维护棋子状态（黑/白/空/可落子）
-        - 提供翻转功能
-        - 统计黑白棋子数量
+2. `hotspot` 类：回合控制器
+    - 实现"热座"模式的玩家轮换机制
+    - 管理当前行动玩家和等待玩家
+    - 处理玩家移动验证
+    - 控制游戏状态转换
 
-    piecetype：棋子类型枚举
-        - 定义棋子的四种状态：BLACK/WHITE/EMPTY/VALID
-        - 提供获取对手棋子类型的方法(opp)
+3. `spotstatus` 枚举：游戏状态
+    - `MOVE`：等待正常移动
+    - `INVALID`：上一步移动非法
+    - `END`：游戏结束
 
-    player：玩家类
-        - 存储玩家信息（名字、执子颜色）
-        - 管理玩家状态
+### 棋盘管理 (Board Management)
+1. `board` 类：棋盘控制器
+    - 维护 8x8 棋盘状态
+    - 处理棋子放置和翻转逻辑
+    - 计算有效移动位置
+    - 提供棋盘状态查询
+    - 统计黑白棋子数量
 
-    input：输入处理类
-        - 处理用户输入（A1-H8，a1-h8格式）
-        - 验证输入合法性
-        - 转换输入为程序可用的坐标
+2. `piece` 类：棋子实体
+    - 维护单个棋子状态
+    - 提供状态转换方法
+    - 实现棋子翻转逻辑
 
-    output：显示类
-        - 打印棋盘当前状态
-        - 显示玩家信息和回合信息
-        - 提供清屏功能
-        - 显示游戏结果
-        - 不保存状态，每次显示时通过参数获取最新信息
+3. `piecestatus` 枚举：棋子状态
+    - `BLACK`：黑棋
+    - `WHITE`：白棋
+    - `EMPTY`：空位
+    - `VALID`：可落子位置
 
-    hotspot：游戏控制，"热座"用于操作
-        - 管理游戏进程
-        - 处理玩家轮换
-        - 判断游戏结束条件
+### 玩家管理 (Player Management)
+1. `player` 类：玩家实体
+    - 存储玩家基本信息（名字）
+    - 管理玩家执子颜色
+    - 提供玩家信息查询接口
 
-    spotstatus：游戏状态枚举
-        - 定义游戏状态：INVALID（非法移动）/MOVE（正常移动）/END（游戏结束）
-        - 用于控制游戏流程
+### 用户界面 (User Interface)
+1. `input` 类：输入控制器
+    - 处理用户输入（A1-H8 格式）
+    - 验证输入合法性
+    - 转换坐标格式
+    - 支持游戏切换指令
 
-    game：游戏类
-        - 管理单个游戏实例
-        - 包含棋盘和游戏状态
-        - 处理游戏逻辑和状态转换
-        - 提供游戏操作接口
+2. `output` 类：显示控制器
+    - 渲染棋盘状态
+    - 显示玩家信息
+    - 提供游戏状态反馈
+    - 实现跨平台清屏功能
 
----
+## UML 类图
 
-## 编译运行命令
+### 关系说明
+1. 组合关系（实线箭头 -->）
+    - 表示强依赖，整体与部分的生命周期绑定
+    - 例如：`board` 包含多个 `piece` 实例
+    - `game` 包含 `board` 和 `hotspot` 实例
 
-### 编译
+2. 依赖关系（虚线箭头 ..>）
+    - 表示运行时的调用关系
+    - 例如：`hotspot` 调用 `board` 的方法
+    - `output` 访问其他类获取显示信息
 
-在 src 目录下执行：
-
-    javac -d ../bin *.java
-
-### 打包
-
-在 bin 目录下执行：
-
-    jar -e reversi -c -f reversi.jar *.class
-
-### 运行
-
-在 bin 目录下执行：
-
-    java -jar reversi.jar
-
----
-
-## UML类图
-
-### 类图关系说明
-
-    实线箭头（-->）：表示组合关系（Composition）
-        - 表示强依赖，整体与部分的关系
-        - 例如：board --> piece 表示棋盘包含多个棋子
-        - 部分不能脱离整体而存在
-        - 如：output 包含对 board、hotspot、player 的引用
-
-    虚线箭头（..>）：表示依赖关系（Dependency）
-        - 表示一个类使用另一个类的功能
-        - 例如：hotspot ..> board 表示游戏控制类会调用棋盘的方法
-        - 是一种较弱的关系，仅在运行时交互
-        - 如：reversi 主类依赖其他类来实现功能
+3. 关联关系（实线 -）
+    - 表示类之间的静态关系
+    - 例如：`player` 和 `piecestatus` 的关联
 
 ```mermaid
 classDiagram
+    %% 主类
     class reversi {
-        +static main(String[])
+        +static void main(String[])
     }
 
+    %% 核心游戏逻辑
+    class game {
+        -board board
+        -hotspot spot
+        -static int count
+        +int gameNum
+        +game(String, String)
+        +makeMove(int[])
+        +getBoard()
+        +getSpot()
+    }
+
+    class hotspot {
+        -player p1
+        -player p2
+        -player player_charge
+        -player player_idle
+        -spotstatus status
+        +hotspot(String, String)
+        +initialize()
+        +makeMove(board, int[])
+        +tryToSwap(board)
+        -switchSpot()
+        +getChargePlayer()
+        +getSpotStatus()
+    }
+
+    class spotstatus {
+        <<enumeration>>
+        MOVE
+        INVALID
+        END
+    }
+
+    %% 棋盘管理
+    class board {
+        -piece[][] board
+        -int white
+        -int black
+        +board()
+        +clear()
+        +add(piecestatus, int[])
+        +flip(int[])
+        +refreshValid(piecestatus)
+        +isValid(int[])
+        +noValid()
+        +isfull()
+        +getWhite()
+        +getBlack()
+        +getPieceBoard()
+    }
+
+    class piece {
+        -piecestatus status
+        +piece()
+        +add(piecestatus)
+        +remove()
+        +flip()
+        +targetValid()
+        +getStatus()
+    }
+
+    class piecestatus {
+        <<enumeration>>
+        EMPTY
+        BLACK
+        WHITE
+        VALID
+        +opp()
+    }
+
+    %% 玩家管理
+    class player {
+        -String name
+        -piecestatus piecetype
+        +player(String, piecestatus)
+        +getName()
+        +getPiecetype()
+    }
+
+    %% 用户界面
     class input {
         -String inputString
         -Scanner scanner
         +input()
-        +getInput() int[]
-        -String_is_valid(String) boolean
-        -formatCoordinate(String) int[]
-        -String_is_valid_num(String) boolean
+        +getInput()
+        -String_is_valid(String)
+        -formatCoordinate(String)
+        -String_is_valid_num(String)
     }
 
     class output {
@@ -161,94 +245,22 @@ classDiagram
         -clear()
     }
 
-    class game {
-        -board board
-        -hotspot hotspot
-        -int gameNum
-        +game(String, String)
-        +makeMove(int[])
-    }
-
-    class board {
-        -piece[][] board
-        +board()
-        +clear()
-        -placeCenter()
-        +add(player, int[])
-        +flip(int[])
-        -flipbeam(int[], int, int)
-        +refreshValid(piecestatus)
-        -isValidPosition(piecestatus, int, int)
-        -canFlipInDirection(piecestatus, int, int, int[])
-        +isValid(int[])
-        +noValid()
-        +isfull()
-        +getWhite()
-        +getBlack()
-    }
-
-    class piece {
-        -piecestatus status
-        +piece()
-        +remove()
-        +add(player)
-        +flip()
-        +getStatus()
-    }
-
-    class piecestatus {
-        <<enumeration>>
-        BLACK
-        WHITE
-        EMPTY
-        VALID
-        +opp()
-    }
-
-    class player {
-        -String name
-        -piecestatus type
-        +player(String, piecestatus)
-        +getName()
-        +getPiecetype()
-    }
-
-    class hotspot {
-        -player p1
-        -player p2
-        -player chargePlayer
-        -player idlePlayer
-        -spotstatus status
-        +hotspot(player, player)
-        +initialize()
-        +makeMove(board, int[])
-        +tryToSwap(board)
-        -switchSpot()
-        +getChargePlayer()
-        +getSpotStatus()
-        +getP1()
-        +getP2()
-    }
-
-    class spotstatus {
-        <<enumeration>>
-        INVALID
-        MOVE
-        END
-    }
-
-    reversi ..> input
-    reversi ..> output
-    reversi ..> game
-    output ..> game
+    %% 关系定义
+    reversi --> game
+    reversi --> input
+    reversi --> output
     game --> board
     game --> hotspot
     board --> piece
-    piece --> piecestatus
-    player --> piecestatus
     hotspot --> player
-    hotspot --> spotstatus
+    player --> piecestatus
+    piece --> piecestatus
     hotspot ..> board
+    output ..> game
+    output ..> board
+    output ..> player
+    game ..> input
+    game ..> output
 ```
 
 ## 运行截图

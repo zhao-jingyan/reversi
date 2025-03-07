@@ -8,6 +8,12 @@
  * 3. tryToSwap(): try to swap the spot, if no valid move, end the game
  */
 
+package reversi.core.game.spot;
+
+import reversi.core.game.board.board;
+import reversi.core.game.board.piecestatus;
+import reversi.core.game.spotstatus;
+
 public class hotspot {
     private final player p1;
     private final player p2;
@@ -16,29 +22,23 @@ public class hotspot {
     private spotstatus status;
 
     //construct a hotspot, black player stay in spot
-    hotspot(player p1, player p2){
-        this.p1 = p1;
-        this.p2 = p2;
-        if(p1.getPiecetype() == piecestatus.BLACK){
-            player_charge = p1;
-            player_idle = p2;
-        }
-        else if(p2.getPiecetype() == piecestatus.WHITE){
-            player_idle = p1; 
-            player_charge = p2;
-        }
+    public hotspot(String p1Name, String p2Name){
+        this.p1 = new player(p1Name, piecestatus.BLACK);
+        this.p2 = new player(p2Name, piecestatus.WHITE);
+        player_charge = this.p1;
+        player_idle = this.p2;
         status = spotstatus.MOVE;
     }
 
     //initialize the spot so black is in spot
-    void initialize(){
+    public void initialize(){
         if(player_charge.getPiecetype() == piecestatus.WHITE)
             this.switchSpot();
 
     }
 
     //try to swap the spot, if no valid move, end the game
-    void tryToSwap(board board){
+    public void tryToSwap(board board){
         board.refreshValid(player_charge.getPiecetype());
         if(board.noValid() && status == spotstatus.MOVE){
             this.switchSpot();
@@ -49,9 +49,9 @@ public class hotspot {
     }
 
     //make a move
-    void makeMove(board board, int[] move){
+    public void makeMove(board board, int[] move){
             if(board.isValid(move)){
-                board.add(player_charge,move);
+                board.add(player_charge.getPiecetype(),move);
                 board.flip(move);
                 this.switchSpot();
                 status = spotstatus.MOVE;

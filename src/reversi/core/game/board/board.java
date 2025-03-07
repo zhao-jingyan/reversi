@@ -1,3 +1,6 @@
+package reversi.core.game.board;
+
+
 /*
  * board is a class that contains a 2D array of pieces
  * the function of it has several parts,which may need to be separated into different files later
@@ -6,11 +9,11 @@
  * 3.checking the board status
  */
 public final class board {
-    piece[][] board;  //store the piece info
+    private final piece[][] board;  //store the piece info
     private int white;
     private int black;
     //construct an empty board with given size
-    board(){
+    public board(){
         //new board
         board = new piece[8][8];
         for (int i = 0; i < 8; i++)
@@ -21,9 +24,9 @@ public final class board {
         this.clear();
     }
 
-    //initializing the board
+
     //clear the board
-    void clear(){
+    public void clear(){
         //initialize the number of pieces
         white = 0;
         black = 0;
@@ -44,24 +47,24 @@ public final class board {
     private void placeCenter(){
         white += 2;
         black += 2;
-        board[3][3].status = piecestatus.WHITE;
-        board[4][4].status = piecestatus.WHITE;      
-        board[4][3].status = piecestatus.BLACK;
-        board[3][4].status = piecestatus.BLACK;
+        board[3][3].addWhite();
+        board[4][4].addWhite();      
+        board[4][3].addBlack();
+        board[3][4].addBlack();
     }
 
     //adding a move, gamelogic will make sure the input is secure
-    void add(player name ,int[] move){
-        board[move[0]][move[1]].add(name);
-        if(name.getPiecetype() == piecestatus.WHITE)
+    public void add(piecestatus status ,int[] move){
+        board[move[0]][move[1]].add(status);
+        if(status == piecestatus.WHITE)
             white++;
-        else if(name.getPiecetype() == piecestatus.BLACK)
+        else if(status == piecestatus.BLACK)
             black++;
     }
   
     //flipping pieces
     //flip all the pieces
-    void flip(int[] input) {
+    public void flip(int[] input) {
         //locate the piece
         int x = input[0];
         int y = input[1];
@@ -96,11 +99,11 @@ public final class board {
             //going back and flip the pieces
             if(xp + dx >= 0 && xp + dx < 8 && yp + dy >= 0 && yp + dy < 8 && board[xp + dx][yp + dy].getStatus() == piece){
                 while(xp != x || yp != y){
-                    if(board[xp][yp].status == piecestatus.BLACK){
+                    if(board[xp][yp].getStatus() == piecestatus.BLACK){
                         black--;
                         white++;
                     }
-                    else if(board[xp][yp].status == piecestatus.WHITE){
+                    else if(board[xp][yp].getStatus() == piecestatus.WHITE){
                         black++;
                         white--;
                     }
@@ -120,10 +123,10 @@ public final class board {
             for(int j = 0; j < 8; j++){
                 //check if the position is valid
                 if(isValidPosition(type, i, j))
-                    board[i][j].status = piecestatus.VALID;
+                    board[i][j].targetValid();
                 //the originally valid position is no longer valid, then set it to empty
                 else if(board[i][j].getStatus() == piecestatus.VALID)
-                    board[i][j].status = piecestatus.EMPTY;
+                    board[i][j].remove();
             }
         }
     }
@@ -152,16 +155,16 @@ public final class board {
         piecestatus piece = type;
         piecestatus opp = type.opp();
 
-        if(!(xp + dx >= 0 && xp + dx < 8 && yp + dy >= 0 && yp + dy < 8)|| board[xp + dx][yp + dy].status != opp)//not in boarder or not having an opposite piece in line
+        if(!(xp + dx >= 0 && xp + dx < 8 && yp + dy >= 0 && yp + dy < 8)|| board[xp + dx][yp + dy].getStatus() != opp)//not in boarder or not having an opposite piece in line
             return false;
         else{
             xp += dx;
             yp += dy;
             while((xp + dx >= 0 && xp + dx < 8 && yp + dy >= 0 && yp + dy < 8)  //in boarder
-            && board[xp + dx][yp + dy].status != piecestatus.EMPTY && board[xp + dx][yp + dy].status != piecestatus.VALID){   //do not meet empty or valid
-                if(board[xp + dx][yp + dy].status == piece)
+            && board[xp + dx][yp + dy].getStatus() != piecestatus.EMPTY && board[xp + dx][yp + dy].getStatus() != piecestatus.VALID){   //do not meet empty or valid
+                if(board[xp + dx][yp + dy].getStatus() == piece)
                     return true;
-                else if(board[xp + dx][yp + dy].status == opp){
+                else if(board[xp + dx][yp + dy].getStatus() == opp){
                     xp += dx;
                     yp += dy;
                 }
@@ -187,10 +190,10 @@ public final class board {
     }
     
     //check if the board is full
-    boolean isfull(){
+    public boolean isfull(){
         for(piece[] row: board)
             for(piece item: row)
-                if(item.status == piecestatus.EMPTY || item.status == piecestatus.VALID)
+                if(item.getStatus() == piecestatus.EMPTY || item.getStatus() == piecestatus.VALID)
                     return false;
         return true;
     }
@@ -203,5 +206,9 @@ public final class board {
     //get the number of black pieces
     public int getBlack(){
         return black;
+    }
+
+    public piece[][] getPieceBoard(){
+        return board;
     }
 }

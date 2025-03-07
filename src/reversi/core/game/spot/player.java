@@ -1,3 +1,7 @@
+package reversi.core.game.spot;
+
+import reversi.core.game.board.piecestatus;
+
 /*
  * player is a class that contains a name and a piece type
  * all the actions are conducted by hotspot, so player only contains information

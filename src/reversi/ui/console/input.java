@@ -3,14 +3,16 @@
  * it reads the input from the terminal and formats it into a coordinate
  * invalid input will return -1,-1
  */
+package reversi.ui.console;
+
 import java.util.Scanner;
 
 public class input {
-    String inputString;
-    Scanner scanner;
+    private String inputString;
+    private final Scanner scanner;
 
     //constructor
-    input(){
+    public input(){
         inputString = "";
         scanner = new Scanner(System.in);
     }

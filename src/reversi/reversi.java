@@ -1,3 +1,10 @@
+package reversi;
+
+import reversi.core.game.game;
+import reversi.core.game.spotstatus;
+import reversi.ui.console.input;
+import reversi.ui.console.output;
+
 /*
  * main class, conduct the game
  */
@@ -18,9 +25,9 @@ public class reversi {
         screen.print(games);
 
         //game loop
-        while(games[0].spot.getSpotStatus() != spotstatus.END ||
-              games[1].spot.getSpotStatus() != spotstatus.END ||
-              games[2].spot.getSpotStatus() != spotstatus.END){
+        while(games[0].getSpot().getSpotStatus() != spotstatus.END ||
+              games[1].getSpot().getSpotStatus() != spotstatus.END ||
+              games[2].getSpot().getSpotStatus() != spotstatus.END){
 
             int[] move = terminal.getInput();            //get input
 
