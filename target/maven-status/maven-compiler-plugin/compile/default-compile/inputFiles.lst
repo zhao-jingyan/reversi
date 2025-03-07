@@ -1,0 +1,13 @@
+/Users/zhaojingyan/Code/java/oop/reversi/src/main/java/module-info.java
+/Users/zhaojingyan/Code/java/oop/reversi/src/main/java/reversi/core/game/board/piece.java
+/Users/zhaojingyan/Code/java/oop/reversi/src/main/java/reversi/core/game/spotstatus.java
+/Users/zhaojingyan/Code/java/oop/reversi/src/main/java/reversi/core/game/spot/hotspot.java
+/Users/zhaojingyan/Code/java/oop/reversi/src/main/java/reversi/core/game/game.java
+/Users/zhaojingyan/Code/java/oop/reversi/src/main/java/reversi/ui/console/input.java
+/Users/zhaojingyan/Code/java/oop/reversi/src/main/java/reversi/ui/gui/gui_input.java
+/Users/zhaojingyan/Code/java/oop/reversi/src/main/java/reversi/ui/gui/gui_window.java
+/Users/zhaojingyan/Code/java/oop/reversi/src/main/java/reversi/core/game/spot/player.java
+/Users/zhaojingyan/Code/java/oop/reversi/src/main/java/reversi/ui/console/output.java
+/Users/zhaojingyan/Code/java/oop/reversi/src/main/java/reversi/core/game/board/piecestatus.java
+/Users/zhaojingyan/Code/java/oop/reversi/src/main/java/reversi/core/game/board/board.java
+/Users/zhaojingyan/Code/java/oop/reversi/src/main/java/reversi/reversi.java

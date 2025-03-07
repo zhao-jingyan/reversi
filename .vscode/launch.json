@@ -1,0 +1,34 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "reversi",
+            "request": "launch",
+            "mainClass": "reversi/reversi.reversi",
+            "projectName": "reversi"
+        },
+        {
+            "type": "java",
+            "name": "gui_window",
+            "request": "launch",
+            "mainClass": "reversi/reversi.ui.gui.gui_window",
+            "projectName": "reversi"
+        },
+        {
+            "type": "java",
+            "name": "gui_output",
+            "request": "launch",
+            "mainClass": "reversi/reversi.ui.gui.gui_output",
+            "projectName": "reversi"
+        },
+        {
+            "type": "java",
+            "name": "GUI Output",
+            "request": "launch",
+            "mainClass": "reversi.ui.gui.gui_output",
+            "projectName": "reversi",
+            "vmArgs": "--module-path lib --add-modules javafx.controls,javafx.graphics,javafx.fxml"
+        }
+    ]
+} 

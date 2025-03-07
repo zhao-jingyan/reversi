@@ -1,0 +1,16 @@
+reversi/core/game/board/piecestatus.class
+reversi/ui/console/output$1.class
+reversi/ui/gui/gui_window$1.class
+reversi/core/game/spotstatus.class
+reversi/ui/console/input.class
+reversi/ui/gui/gui_window.class
+reversi/ui/console/output.class
+reversi/core/game/board/piece.class
+reversi/reversi.class
+reversi/reversi$1.class
+module-info.class
+reversi/core/game/spot/player.class
+reversi/ui/gui/gui_input.class
+reversi/core/game/board/board.class
+reversi/core/game/game.class
+reversi/core/game/spot/hotspot.class
