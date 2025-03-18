@@ -6,10 +6,12 @@
 
 ## 文档结构
 
+        
     .
     ├── README.md
     ├── README.pdf
     ├── bin
+    │   ├── MANIFEST.MF
     │   └── reversi
     │       ├── core
     │       │   └── game
@@ -24,28 +26,16 @@
     │       │       └── spotstatus.class
     │       ├── reversi.class
     │       └── ui
-    │           ├── console
-    │           │   ├── input.class
-    │           │   └── output.class
-    │           └── gui
-    ├── oldfiles
-    │   ├── README_oldversion1.0.md
-    │   ├── pic_v1
-    │   │   ├── screenshot1.png
-    │   │   ├── screenshot2.png
-    │   │   ├── screenshot3.png
-    │   │   ├── screenshot4.png
-    │   │   ├── screenshot5.png
-    │   │   └── screenshot6.png
-    │   └── pic_v2
-    │       ├── screenshot1.png
-    │       ├── screenshot2.png
-    │       └── screenshot3.png
+    │           └── console
+    │               ├── input.class
+    │               ├── output$1.class
+    │               └── output.class
     ├── pic
     │   ├── screenshot1.png
     │   ├── screenshot2.png
     │   ├── screenshot3.png
     │   └── screenshot4.png
+    ├── reversi.jar
     └── src
         └── reversi
             ├── core
@@ -61,12 +51,11 @@
             │       └── spotstatus.java
             ├── reversi.java
             └── ui
-                ├── console
-                │   ├── input.java
-                │   └── output.java
-                └── gui
+                └── console
+                    ├── input.java
+                    └── output.java
     
-    23 directories, 36 files
+    18 directories, 29 files
 
 ---
 
