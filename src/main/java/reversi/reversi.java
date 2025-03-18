@@ -139,8 +139,8 @@ public class reversi extends Application {
                           blackCount < whiteCount ? "白方胜利！" : "平局！";
             statusLabel.setText(winner);
         } else {
-            String emoji = playerColor == piecestatus.BLACK ? "黑方" : "白方";
-            statusLabel.setText(colorText + " [" + playerName + "] " + emoji + " 回合");
+            String turnSymbol = playerColor == piecestatus.BLACK ? "●" : "○";
+            statusLabel.setText(colorText + " [" + playerName + "] " + turnSymbol + " 回合");
         }
     }
 
