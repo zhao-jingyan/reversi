@@ -1,182 +1,82 @@
 package reversi.core.game.board;
 
+import reversi.core.game.GameMode;
+import reversi.core.game.board.types.PeaceBoard;
+import reversi.core.game.board.types.ReversiBoard;
 
 /*
- * board is a class that contains a 2D array of pieces
- * the function of it has several parts,which may need to be separated into different files later
- * 1.managing the pieces
- * 2.flipping the pieces
- * 3.checking the board status
+ * Board is an abstract class that contains a 2D array of pieces
+ * It defines the basic board operations and structure
+ * Different game types can extend this class to implement their own board logic
  */
-public final class board {
-    private final piece[][] board;  //store the piece info
-    private int white;
-    private int black;
+public abstract class Board {
+    protected final Piece[][] board;  //store the piece info
+    protected int white;
+    protected int black;
+    
     //construct an empty board with given size
-    public board(){
+    protected Board(){
         //new board
-        board = new piece[8][8];
+        board = new Piece[8][8];
         for (int i = 0; i < 8; i++)
             for (int j = 0; j < 8; j++)
-                board[i][j] = new piece();
+                board[i][j] = new Piece();
 
         //clear board
         this.clear();
     }
 
+    // 工厂方法，根据类型创建对应的棋盘实例
+    public static Board createBoard(GameMode mode) {
+        if (mode == GameMode.PEACE) {
+            return new PeaceBoard();
+        } else if (mode == GameMode.REVERSI) {
+            return new ReversiBoard();
+        } else {
+            throw new IllegalArgumentException("Unknown board type: " + mode);
+        }
+    }
 
-    //clear the board
-    public void clear(){
+    //clear the board - template method
+    public final void clear(){
         //initialize the number of pieces
         white = 0;
         black = 0;
 
         //clear the board
-        for(piece[] row: board)
-            for(piece item: row)
+        for(Piece[] row: board)
+            for(Piece item: row)
                 item.remove();
 
-        //place the center block
-        this.placeCenter();
+        //initialize board according to game type
+        initializeBoard();
 
         //refresh the valid positions
-        refreshValid(piecestatus.BLACK);
+        refreshValid(PieceStatus.BLACK);
     }
 
-    //place center block
-    private void placeCenter(){
-        white += 2;
-        black += 2;
-        board[3][3].addWhite();
-        board[4][4].addWhite();      
-        board[4][3].addBlack();
-        board[3][4].addBlack();
-    }
+    //initialize board according to game type
+    protected abstract void initializeBoard();
+    
+    //refresh valid positions
+    public abstract void refreshValid(PieceStatus type);
+
+    //flip the pieces
+    public abstract void flip(int[] move);
 
     //adding a move, gamelogic will make sure the input is secure
-    public void add(piecestatus status ,int[] move){
+    public void add(PieceStatus status ,int[] move){
         board[move[0]][move[1]].add(status);
-        if(status == piecestatus.WHITE)
+        if(status == PieceStatus.WHITE)
             white++;
-        else if(status == piecestatus.BLACK)
+        else if(status == PieceStatus.BLACK)
             black++;
-    }
-  
-    //flipping pieces
-    //flip all the pieces
-    public void flip(int[] input) {
-        //locate the piece
-        int x = input[0];
-        int y = input[1];
-        
-        //set 8 directions
-        int[][] directions = {
-            {1, 0}, {-1,  0}, {0,  1}, {0, -1},
-            {1, 1}, {-1, -1}, {1, -1}, {-1, 1}
-        };
-        
-        //flip the pieces
-        for(int[] dir : directions){
-            this.flipbeam(dir, x, y);
-        }
-    }
-    
-    //flip a line of pieces
-    private void flipbeam(int[] direction, int x, int y) {
-        //set the variables
-        int xp = x;
-        int yp = y;
-        piecestatus piece = board[x][y].getStatus();
-        int dx = direction[0];
-        int dy = direction[1];
-        
-        //flip the pieces
-        while((xp + dx >= 0 && xp + dx < 8 && yp + dy >= 0 && yp + dy < 8)//in boarder
-        && board[xp + dx][yp + dy].getStatus() == piece.opp()){           //do not meet same piece
-            xp += dx;
-            yp += dy;
-            
-            //going back and flip the pieces
-            if(xp + dx >= 0 && xp + dx < 8 && yp + dy >= 0 && yp + dy < 8 && board[xp + dx][yp + dy].getStatus() == piece){
-                while(xp != x || yp != y){
-                    if(board[xp][yp].getStatus() == piecestatus.BLACK){
-                        black--;
-                        white++;
-                    }
-                    else if(board[xp][yp].getStatus() == piecestatus.WHITE){
-                        black++;
-                        white--;
-                    }
-                    board[xp][yp].flip();
-                    xp -= dx;
-                    yp -= dy;
-                }
-                break;
-            }
-        }
-    }
-    
-    //checking valid positions
-    //refresh the valid positions
-    public void refreshValid(piecestatus type){
-        for(int i = 0; i < 8; i++){
-            for(int j = 0; j < 8; j++){
-                //check if the position is valid
-                if(isValidPosition(type, i, j))
-                    board[i][j].targetValid();
-                //the originally valid position is no longer valid, then set it to empty
-                else if(board[i][j].getStatus() == piecestatus.VALID)
-                    board[i][j].remove();
-            }
-        }
-    }
-    
-    //check if the position is valid
-    private boolean isValidPosition(piecestatus type, int x, int y){
-        if(board[x][y].getStatus() == piecestatus.BLACK || board[x][y].getStatus() == piecestatus.WHITE)
-            return false;
-        int[][] directions = {
-            {1, 0}, {-1,  0}, {0,  1}, {0, -1},
-            {1, 1}, {-1, -1}, {1, -1}, {-1, 1}
-        };
-        for (int[] dir : directions)
-            if(canFlipInDirection(type, x, y, dir))
-                return true;
-        return false;
-    }
-    
-    //check if the position can be flipped in a direction ,partly generated by llm
-    private boolean canFlipInDirection(piecestatus type, int x, int y, int[] direction) {
-        //set the variables
-        int xp = x;
-        int yp = y;
-        int dx = direction[0];
-        int dy = direction[1];
-        piecestatus piece = type;
-        piecestatus opp = type.opp();
-
-        if(!(xp + dx >= 0 && xp + dx < 8 && yp + dy >= 0 && yp + dy < 8)|| board[xp + dx][yp + dy].getStatus() != opp)//not in boarder or not having an opposite piece in line
-            return false;
-        else{
-            xp += dx;
-            yp += dy;
-            while((xp + dx >= 0 && xp + dx < 8 && yp + dy >= 0 && yp + dy < 8)  //in boarder
-            && board[xp + dx][yp + dy].getStatus() != piecestatus.EMPTY && board[xp + dx][yp + dy].getStatus() != piecestatus.VALID){   //do not meet empty or valid
-                if(board[xp + dx][yp + dy].getStatus() == piece)
-                    return true;
-                else if(board[xp + dx][yp + dy].getStatus() == opp){
-                    xp += dx;
-                    yp += dy;
-                }
-            }
-            return false;
-        }
     }
     
     //checking board status
     //check if the move is landed on a valid position
     public boolean isValid(int[] move){
-        return move[0] != -2 && board[move[0]][move[1]].getStatus() == piecestatus.VALID;
+        return move[0] != -2 && board[move[0]][move[1]].getStatus() == PieceStatus.VALID;
     }
     
     //check if there is no valid position
@@ -184,16 +84,16 @@ public final class board {
         boolean ans = true;
         for(int i = 0; i < 8; i++)
             for(int j = 0; j < 8; j++)
-                if(board[i][j].getStatus() == piecestatus.VALID)
+                if(board[i][j].getStatus() == PieceStatus.VALID)
                     ans = false;
         return ans;
     }
     
     //check if the board is full
     public boolean isfull(){
-        for(piece[] row: board)
-            for(piece item: row)
-                if(item.getStatus() == piecestatus.EMPTY || item.getStatus() == piecestatus.VALID)
+        for(Piece[] row: board)
+            for(Piece item: row)
+                if(item.getStatus() == PieceStatus.EMPTY || item.getStatus() == PieceStatus.VALID)
                     return false;
         return true;
     }
@@ -208,7 +108,7 @@ public final class board {
         return black;
     }
 
-    public piece[][] getPieceBoard(){
+    public Piece[][] getPieceBoard(){
         return board;
     }
 }

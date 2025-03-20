@@ -5,86 +5,101 @@
  * it has a status to indicate what's happening
  * it has two importantmethods:
  * 2. makeMove(): make a move
- * 3. tryToSwap(): try to swap the spot, if no valid move, end the game
+ * 3. handleNoValidMoves(): check if the current player has no valid moves, if so, switch to the other player
  */
 
 package reversi.core.game.spot;
 
-import reversi.core.game.board.board;
-import reversi.core.game.board.piecestatus;
-import reversi.core.game.spotstatus;
+import reversi.core.game.board.Board;
+import reversi.core.game.board.PieceStatus;
+import reversi.information.InfoType;
+import reversi.information.Information;
+import reversi.ui.information.types.MoveInformation;
 
-public class hotspot {
-    private final player p1;
-    private final player p2;
-    private player player_charge;
-    private player player_idle;
-    private spotstatus status;
+public class HotSpot {
+    private final Player p1;
+    private final Player p2;
+    private Player chargePlayer;
+    private SpotStatus status;
 
     //construct a hotspot, black player stay in spot
-    public hotspot(String p1Name, String p2Name){
-        this.p1 = new player(p1Name, piecestatus.BLACK);
-        this.p2 = new player(p2Name, piecestatus.WHITE);
-        player_charge = this.p1;
-        player_idle = this.p2;
-        status = spotstatus.MOVE;
+    public HotSpot(String p1Name, String p2Name){
+        this.p1 = new Player(p1Name, PieceStatus.BLACK);
+        this.p2 = new Player(p2Name, PieceStatus.WHITE);
+        chargePlayer = this.p1;
+        status = SpotStatus.MOVE;
     }
 
     //initialize the spot so black is in spot
     public void initialize(){
-        if(player_charge.getPiecetype() == piecestatus.WHITE)
-            this.switchSpot();
-
-    }
-
-    //try to swap the spot, if no valid move, end the game
-    public void tryToSwap(board board){
-        board.refreshValid(player_charge.getPiecetype());
-        if(board.noValid() && status == spotstatus.MOVE){
-            this.switchSpot();
-            board.refreshValid(player_charge.getPiecetype());
-            if(board.noValid())
-                status = spotstatus.END;
-        }
+        chargePlayer = p1;
+        status = SpotStatus.MOVE;
     }
 
     //make a move
-    public void makeMove(board board, int[] move){
-            if(board.isValid(move)){
-                board.add(player_charge.getPiecetype(),move);
-                board.flip(move);
-                this.switchSpot();
-                status = spotstatus.MOVE;
+    public void makeMove(Board board, Information info){
+        if (!info.isValid()) {
+            status = SpotStatus.INVALID;
+        }
+        else if (info instanceof MoveInformation moveInfo) {
+            if(board.isValid(moveInfo.getInfo())){
+                board.add(chargePlayer.getPiecetype(),moveInfo.getInfo());
+                board.flip(moveInfo.getInfo());
+                chargePlayer = (chargePlayer == p1) ? p2 : p1;
+                board.refreshValid(chargePlayer.getPiecetype());
+                status = SpotStatus.MOVE;
+                handleNoValidMoves(board);
             }
-            else{
-                status = spotstatus.INVALID;
+            else {
+                status = SpotStatus.INVALID;
             }
         }
-    
-    //switch player_charge and player_idle
-    private void switchSpot(){
-            player tmp = player_charge;
-            player_charge = player_idle;
-            player_idle = tmp;
+        else if (info.getInfoType() == InfoType.PASS && status == SpotStatus.NOVALID) {
+            //NOVALID means opposite player has a move, which is checked by handleNoValidMoves, or the game would end
+            chargePlayer = (chargePlayer == p1) ? p2 : p1;
+            board.refreshValid(chargePlayer.getPiecetype());
+            status = SpotStatus.MOVE;
+        }
+        else{
+            status = SpotStatus.INVALID;
+        }
+    }
+
+    //check if the current player has no valid moves, if so, switch to the other player
+    private void handleNoValidMoves(Board board){
+        if(board.noValid()){
+            //switch pos and check the other player
+            chargePlayer = (chargePlayer == p1) ? p2 : p1;
+            board.refreshValid(chargePlayer.getPiecetype());
+            if(board.noValid())
+                status = SpotStatus.END;
+            //switch back
+            else {
+                chargePlayer = (chargePlayer == p1) ? p2 : p1;
+                board.refreshValid(chargePlayer.getPiecetype());
+                status = SpotStatus.NOVALID;
+                //waiting for pass
+            }
+        }
     }
 
     //get the player in spot
-    public player getChargePlayer(){
-        return player_charge;
+    public Player getChargePlayer(){
+        return chargePlayer;
     }
 
     //get the status of the spot
-    public spotstatus getSpotStatus(){
+    public SpotStatus getSpotStatus(){
         return status;
     }
 
     //get the player p1
-    public player getP1(){
+    public Player getP1(){
         return p1;
     }
 
     //get the player p2
-    public player getP2(){
+    public Player getP2(){
         return p2;
     }
 

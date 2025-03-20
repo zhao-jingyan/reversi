@@ -1,26 +1,37 @@
 package reversi.ui.console;
 
 import java.io.IOException;
-import reversi.core.game.board.piece;
-import reversi.core.game.board.piecestatus;
-import reversi.core.game.game;
-import reversi.core.game.spotstatus;
+import java.util.ArrayList;
 
-public class output {
+import reversi.core.Game;
+import reversi.core.board.Piece;
+import reversi.core.board.PieceStatus;
+import reversi.core.board.types.ReversiBoard;
+import reversi.core.spot.SpotStatus;
+import reversi.ui.information.InfoType;
+import reversi.ui.information.Information;
+
+public class Output {
     //construct a screen
-    public output(){
+    public Output(){
     }
     
     //print all the information
-    public void print(game[] games){
+    public void print(ArrayList<Game> games, Information info){
+        if(games.get(0).getSpot().getSpotStatus() == SpotStatus.INVALID){
+            if(info.getInfoType() == InfoType.PASS)
+                System.out.println("You shall not pass!");
+            else if(info)
+        }
+        Game game = games.get(0);
 
         //clear
         clear();
 
         //head
-        System.out.printf("Game: %d\n", games[0].getGameNum());
-        System.out.printf("Black: %d\n",games[0].getBoard().getBlack());
-        System.out.printf("White: %d\n",games[0].getBoard().getWhite());
+        System.out.printf("Game: %d\n", game.getGameNum());
+        System.out.printf("Black: %d\n",game.getBoard().getBlack());
+        System.out.printf("White: %d\n",game.getBoard().getWhite());
 
         //first row
         System.out.printf(" ");
@@ -29,10 +40,10 @@ public class output {
         }
         System.out.printf("\n");
 
-        //board
+        //Left
         for(int row = 0; row < 8; row++){
             System.out.printf("%d ",row + 1);
-            for(piece item : games[0].getBoard().getPieceBoard()[row]){
+            for(Piece item : game.getBoard().getPieceBoard()[row]){
                 switch(item.getStatus()){
                     case EMPTY -> System.out.printf("· ");
                     case BLACK -> System.out.printf("○ ");
@@ -40,38 +51,48 @@ public class output {
                     case VALID -> System.out.printf("x ");
                 }
             }
-            //player info
+        //Middle 
             switch (row){
-                case 3 -> System.out.printf("   player[%s] %c\n" , games[0].getSpot().getP1().getName() , games[0].getSpot().getChargePlayer().getPiecetype() == piecestatus.BLACK ? '○' : ' ');
-                case 4 -> System.out.printf("   player[%s] %c\n" , games[0].getSpot().getP2().getName() , games[0].getSpot().getChargePlayer().getPiecetype() == piecestatus.WHITE ? '●' : ' ');
-                default -> System.out.printf("\n");
+                case 3 : System.out.printf("   Game %d" , game.getGameNum()); break;
+                case 4 : System.out.printf("   player[%s] %c " , game.getSpot().getP1().getName() , (game.getSpot().getChargePlayer().getPiecetype() == PieceStatus.BLACK) ? '○' : ' ');
+                    if(game.getBoard() instanceof ReversiBoard){
+                        System.out.printf("%d",game.getBoard().getBlack());
+                    }
+                    break;
+                case 5 : System.out.printf("   player[%s] %c " , game.getSpot().getP2().getName(), (game.getSpot().getChargePlayer().getPiecetype() == PieceStatus.WHITE) ? '●' : ' '); 
+                    if(game.getBoard() instanceof ReversiBoard){
+                        System.out.printf("%d",game.getBoard().getWhite());
+                    }
+                    break;  
+                default : break;
             }
+        //Right
+            switch (row){
+                
+            }
+
         }
 
         System.out.printf("\n");
 
-        //bottom info
-        if(games[1].getSpot().getSpotStatus() == spotstatus.END &&
-           games[2].getSpot().getSpotStatus() == spotstatus.END &&
-           games[3].getSpot().getSpotStatus() == spotstatus.END){
-            System.out.println("All games end!");
-        }
-        else if(games[0].getBoard().isfull() || games[0].getSpot().getSpotStatus() == spotstatus.END){
-            if(games[0].getBoard().getBlack() > games[0].getBoard().getWhite())
+
+        if(game.getBoard().isfull() || game.getSpot().getSpotStatus() == SpotStatus.END){
+            if(game.getBoard().getBlack() > game.getBoard().getWhite())
                 System.out.println("Black wins!");
-            else if(games[0].getBoard().getBlack() < games[0].getBoard().getWhite())
+            else if(game.getBoard().getBlack() < game.getBoard().getWhite())
                 System.out.println("White wins!");  
-            else if(games[0].getBoard().getBlack() == games[0].getBoard().getWhite())
+            else if(game.getBoard().getBlack() == game.getBoard().getWhite())
                 System.out.println("A tied game!");
             System.out.println("Going to board:");
         }
         else{
             //error info
-            if(games[0].getSpot().getSpotStatus() == spotstatus.INVALID)
+            if(game.getSpot().getSpotStatus() == SpotStatus.INVALID)
                 System.out.println("Invalid postion! Please retry!");
 
             //reminder
-            System.out.printf("Player [%s] please enter your move or switch board:",games[0].getSpot().getChargePlayer().getName());
+
+            System.out.printf("Player [%s] please enter your move or switch board:",game.getSpot().getChargePlayer().getName());
         }
     }
 

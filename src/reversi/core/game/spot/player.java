@@ -1,19 +1,19 @@
-package reversi.core.game.spot;
+package reversi.core.spot;
 
-import reversi.core.game.board.piecestatus;
+import reversi.core.board.PieceStatus;
 
 /*
  * player is a class that contains a name and a piece type
  * all the actions are conducted by hotspot, so player only contains information
  */
-public class player {
+public class Player {
     private final String name;
-    private final piecestatus piecetype; 
+    private final PieceStatus piecetype; 
 
     //construct a player with given name and pieceType
-    player(String given_name,piecestatus symbol){
-        name = given_name;
-        piecetype = symbol;
+    public Player(String name, PieceStatus piecetype){
+        this.name = name;
+        this.piecetype = piecetype;
     }
 
     //get the name of the player
@@ -22,7 +22,7 @@ public class player {
     }
 
     //get the piece type of the player
-    public piecestatus getPiecetype(){
+    public PieceStatus getPiecetype(){
         return piecetype;
     }
 }

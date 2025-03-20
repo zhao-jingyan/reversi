@@ -1,4 +1,4 @@
-package reversi.core.game;
+package reversi.core.spot;
 
 /*
  * spot status is readed so the game can now what's happening
@@ -7,6 +7,6 @@ package reversi.core.game;
  * END means no more moves
  */
 
-public enum spotstatus {
-    MOVE, INVALID, END;
+public enum SpotStatus {
+    MOVE, INVALID, END, NOVALID;
 }

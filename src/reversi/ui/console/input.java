@@ -6,59 +6,79 @@
 package reversi.ui.console;
 
 import java.util.Scanner;
+import reversi.info.inputinfo.InfoType;
 
-public class input {
-    private String inputString;
+public class Input {
     private final Scanner scanner;
 
     //constructor
-    public input(){
-        inputString = "";
+    public Input(){
         scanner = new Scanner(System.in);
     }
 
     //get the input from the terminal
-    public int[] getInput(){
-        while (!scanner.hasNextLine()){} //wait for input
-        inputString = scanner.nextLine();
-        int [] coordinates = new int[2];
-        if (String_is_valid(inputString))
-            coordinates = formatCoordinate(inputString);
-        else if(String_is_valid_num(inputString)){
-            coordinates[0] = -1;
-            coordinates[1] = Integer.parseInt(inputString);
-        }
-        else{
-            coordinates[0] = -2;
-            coordinates[1] = -2;
-        }
-        return coordinates;
+    public InputResult getInput(){
+        // 第一步：获取原始输入
+        String rawInput = getRawInput();
+        
+        // 第二步：判断输入类型
+        InfoType infoType = determineType(rawInput);
+        
+        return new InputResult(infoType, rawInput);
     }
     
-    //check if the input is valid
-    private static boolean String_is_valid(String testee){
-        //a~h A~H 1~8 are valid inputs
-        boolean valid = testee.length() == 2 &&
-               (testee.charAt(1) <= '8' && testee.charAt(1) >= '1') &&
-              ((testee.charAt(0) <= 'H' && testee.charAt(0) >= 'A') ||
-               (testee.charAt(0) <= 'h' && testee.charAt(0) >= 'a'));
-        return valid;
+    private String getRawInput() {
+        while (!scanner.hasNextLine()){} //wait for input
+        return scanner.nextLine();
     }
 
-    //format the input into a coordinate
-    private static int[] formatCoordinate(String input){
-        int[] ans = new int[2]; //first is row num; second is col num
-        ans[0] = input.charAt(1) - '1';
-        if(input.charAt(0) <= 'H' && input.charAt(0) >= 'A')
-            ans[1] = input.charAt(0) - 'A';
-        else if(input.charAt(0) <= 'h' && input.charAt(0) >= 'a')
-            ans[1] = input.charAt(0) - 'a';
-        return ans;
+    @SuppressWarnings("UnnecessaryTemporaryOnConversionFromString")//检查是否是数字 
+    private static InfoType determineType(String input) {
+        // 检查是否是坐标
+        if (input.length() == 2 && 
+            ((input.charAt(0) >= 'A' && input.charAt(0) <= 'H') || 
+             (input.charAt(0) >= 'a' && input.charAt(0) <= 'h')) &&
+            (input.charAt(1) >= '1' && input.charAt(1) <= '8')) {
+            return InfoType.COORDINATES;
+        }
+        // 检查是否是pass
+        else if (input.toLowerCase().equals("pass")) {
+            return InfoType.PASS;
+        }
+        // 检查是否是quit
+        else if (input.toLowerCase().equals("quit")) {
+            return InfoType.QUIT;
+        }   
+        // 检查是否是newgame
+        else if (input.toLowerCase().equals("peace") || input.toLowerCase().equals("reversi")) {
+            return InfoType.NEWGAME;
+        }
+        // 检查是否是boardnum
+        try {
+            Integer.parseInt(input);
+            return InfoType.BOARDNUM;
+        } catch (NumberFormatException e) {
+            return InfoType.INVALID;
+        }
     }
 
-    private static boolean String_is_valid_num(String testee){
-        return "1".equals(testee) || "2".equals(testee) || "3".equals(testee);
+    public static class InputResult {
+        private final InfoType infoType;
+        private final String rawInput;
+
+        public InputResult(InfoType infoType, String rawInput) {
+            this.infoType = infoType;
+            this.rawInput = rawInput;
+        }
+
+        public InfoType getInfoType() {
+            return infoType;
+        }
+
+        public String getRawInput() {
+            return rawInput;
+        }
     }
-
-
 }
+
+
