@@ -31,11 +31,7 @@ public class MoveInformation extends InputInformation {
     }
 
     @Override
-    public Object getInfo() {
-        return coordinates;
-    }
-
-    public int[] getCoordinates() {
+    public int[] getInfo() {
         return coordinates;
     }
 

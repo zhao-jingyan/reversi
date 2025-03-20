@@ -1,6 +1,6 @@
-package reversi.core.spot;
+package reversi.core.game.spot;
 
-import reversi.core.board.PieceStatus;
+import reversi.core.game.board.PieceStatus;
 
 /*
  * player is a class that contains a name and a piece type

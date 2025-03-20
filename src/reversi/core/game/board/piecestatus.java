@@ -1,4 +1,4 @@
-package reversi.core.board;
+package reversi.core.game.board;
 
 /*
  * piecetype is a enum that contains the type of the piece

@@ -12,9 +12,7 @@ package reversi.core.game.spot;
 
 import reversi.core.game.board.Board;
 import reversi.core.game.board.PieceStatus;
-import reversi.information.InfoType;
-import reversi.information.Information;
-import reversi.ui.information.types.MoveInformation;
+import reversi.info.inputinfo.types.MoveInformation;
 
 public class HotSpot {
     private final Player p1;
@@ -37,32 +35,26 @@ public class HotSpot {
     }
 
     //make a move
-    public void makeMove(Board board, Information info){
-        if (!info.isValid()) {
-            status = SpotStatus.INVALID;
-        }
-        else if (info instanceof MoveInformation moveInfo) {
-            if(board.isValid(moveInfo.getInfo())){
-                board.add(chargePlayer.getPiecetype(),moveInfo.getInfo());
-                board.flip(moveInfo.getInfo());
-                chargePlayer = (chargePlayer == p1) ? p2 : p1;
-                board.refreshValid(chargePlayer.getPiecetype());
-                status = SpotStatus.MOVE;
-                handleNoValidMoves(board);
-            }
-            else {
-                status = SpotStatus.INVALID;
-            }
-        }
-        else if (info.getInfoType() == InfoType.PASS && status == SpotStatus.NOVALID) {
-            //NOVALID means opposite player has a move, which is checked by handleNoValidMoves, or the game would end
+    public void makeMove(Board board, MoveInformation info){
+        if(board.isValid(info.getInfo())){
+            board.add(chargePlayer.getPiecetype(),info.getInfo());
+            board.flip(info.getInfo());
             chargePlayer = (chargePlayer == p1) ? p2 : p1;
             board.refreshValid(chargePlayer.getPiecetype());
             status = SpotStatus.MOVE;
+            handleNoValidMoves(board);
         }
-        else{
+        else {
             status = SpotStatus.INVALID;
         }
+    }
+
+    public void pass(Board board){
+        //NOVALID means opposite player has a move, which is checked by handleNoValidMoves, or the game would end
+        chargePlayer = (chargePlayer == p1) ? p2 : p1;
+        board.refreshValid(chargePlayer.getPiecetype());
+        status = SpotStatus.MOVE;
+        handleNoValidMoves(board);
     }
 
     //check if the current player has no valid moves, if so, switch to the other player

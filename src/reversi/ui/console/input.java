@@ -7,6 +7,7 @@ package reversi.ui.console;
 
 import java.util.Scanner;
 import reversi.info.inputinfo.InfoType;
+import reversi.info.inputinfo.InputInformation;
 
 public class Input {
     private final Scanner scanner;
@@ -17,21 +18,17 @@ public class Input {
     }
 
     //get the input from the terminal
-    public InputResult getInput(){
+    public InputInformation getInput(){
         // 第一步：获取原始输入
-        String rawInput = getRawInput();
+        while (!scanner.hasNextLine()){} //wait for input
+        String rawInput = scanner.nextLine();
         
         // 第二步：判断输入类型
         InfoType infoType = determineType(rawInput);
         
-        return new InputResult(infoType, rawInput);
+        return InputInformation.create(infoType, rawInput);
     }
     
-    private String getRawInput() {
-        while (!scanner.hasNextLine()){} //wait for input
-        return scanner.nextLine();
-    }
-
     @SuppressWarnings("UnnecessaryTemporaryOnConversionFromString")//检查是否是数字 
     private static InfoType determineType(String input) {
         // 检查是否是坐标
@@ -62,23 +59,6 @@ public class Input {
         }
     }
 
-    public static class InputResult {
-        private final InfoType infoType;
-        private final String rawInput;
-
-        public InputResult(InfoType infoType, String rawInput) {
-            this.infoType = infoType;
-            this.rawInput = rawInput;
-        }
-
-        public InfoType getInfoType() {
-            return infoType;
-        }
-
-        public String getRawInput() {
-            return rawInput;
-        }
-    }
 }
 
 

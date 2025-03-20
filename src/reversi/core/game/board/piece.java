@@ -1,4 +1,4 @@
-package reversi.core.board;
+package reversi.core.game.board;
 
 /* piece is a class that contains a piece type 
  * number of black and white pieces are set as private static variables

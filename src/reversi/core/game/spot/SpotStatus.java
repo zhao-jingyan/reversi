@@ -1,4 +1,4 @@
-package reversi.core.spot;
+package reversi.core.game.spot;
 
 /*
  * spot status is readed so the game can now what's happening

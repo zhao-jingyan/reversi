@@ -1,0 +1,21 @@
+# macOS system files
+.DS_Store
+**/.DS_Store
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+
+# Compiled files
+*.class
+*.jar
+target/
+build/
+out/
+
+# Logs
+*.log
+logs/ 

@@ -1,7 +1,7 @@
-package reversi.core.board.types;
+package reversi.core.game.board.types;
 
-import reversi.core.board.Board;
-import reversi.core.board.PieceStatus;
+import reversi.core.game.board.Board;
+import reversi.core.game.board.PieceStatus;
 
 /*
  * PeaceBoard implements a simple board for PeaceGame

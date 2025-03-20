@@ -1,10 +1,10 @@
 package reversi.core.game;
 
 import reversi.core.game.board.Board;
-import reversi.core.game.board.PieceStatus;
 import reversi.core.game.spot.HotSpot;
 import reversi.core.game.spot.SpotStatus;
 import reversi.info.inputinfo.InputInformation;
+import reversi.info.inputinfo.types.MoveInformation;
 
 public class Game {
     private final int gameNum;
@@ -26,11 +26,9 @@ public class Game {
     // 执行游戏动作
     public void update(InputInformation info) {
         switch (info.getInfoType()) {
-            case COORDINATES -> spot.makeMove(board, info);
+            case COORDINATES -> spot.makeMove(board, (MoveInformation) info);
             case PASS -> spot.pass(board);
-            case NEWGAME -> spot.newGame(info.getInfo());
-            case BOARDNUM -> spot.switchBoard(info.getInfo());
-            case QUIT -> spot.quit();
+            default -> throw new IllegalArgumentException("Invalid input type: " + info.getInfoType());
         }
     }
 
