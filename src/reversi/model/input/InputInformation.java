@@ -7,13 +7,13 @@ import reversi.model.input.types.*;
  * it has a method to get the type of the information
  */
 
-public abstract class InputInformation{
+public abstract class InputInformation {
     protected InputInformation() {
     }
 
     // 获取输入类型
     public abstract InputType getInputType();
-    
+
     // 获取信息
     public abstract Object getInfo();
 

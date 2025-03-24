@@ -17,21 +17,19 @@ public class Game {
         spot = new HotSpot(p1Name, p2Name);
         this.gameMode = gameMode;
 
-        //initialize game
+        // initialize game
         spot.initialize();
-        board.clear();  
+        board.clear();
     }
 
     // 执行游戏动作
-    public void update(int[] coordinate) throws GameException{
-        try{
+    public void update(int[] coordinate) throws GameException {
+        try {
             spot.makeMove(board, coordinate);
-        }
-        catch(GameException e){
+        } catch (GameException e) {
             throw e;
         }
-    }   
-    
+    }
 
     public int getGameNum() {
         return gameNum;
@@ -52,4 +50,4 @@ public class Game {
     public HotSpot getSpot() {
         return spot;
     }
-} 
+}

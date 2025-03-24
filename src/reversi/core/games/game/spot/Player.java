@@ -8,21 +8,21 @@ import reversi.core.games.game.board.PieceStatus;
  */
 public class Player {
     private final String name;
-    private final PieceStatus piecetype; 
+    private final PieceStatus piecetype;
 
-    //construct a player with given name and pieceType
-    public Player(String name, PieceStatus piecetype){
+    // construct a player with given name and pieceType
+    public Player(String name, PieceStatus piecetype) {
         this.name = name;
         this.piecetype = piecetype;
     }
 
-    //get the name of the player
-    public String getName(){
+    // get the name of the player
+    public String getName() {
         return name;
     }
 
-    //get the piece type of the player
-    public PieceStatus getPiecetype(){
+    // get the piece type of the player
+    public PieceStatus getPiecetype() {
         return piecetype;
     }
 }

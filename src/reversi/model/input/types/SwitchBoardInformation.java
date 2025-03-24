@@ -11,7 +11,7 @@ public class SwitchBoardInformation extends InputInformation {
     }
 
     public static SwitchBoardInformation create(String input) {
-            return new SwitchBoardInformation(Integer.valueOf(input));
+        return new SwitchBoardInformation(Integer.valueOf(input));
     }
 
     @Override
@@ -23,4 +23,4 @@ public class SwitchBoardInformation extends InputInformation {
     public Object getInfo() {
         return boardNum;
     }
-} 
+}

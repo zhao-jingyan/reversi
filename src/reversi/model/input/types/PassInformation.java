@@ -20,4 +20,4 @@ public class PassInformation extends InputInformation {
     public Object getInfo() {
         return null;
     }
-} 
+}

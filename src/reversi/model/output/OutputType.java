@@ -6,4 +6,4 @@ public enum OutputType {
     INVALID_INPUT,
     GAME_OVER,
     ALL_GAMES_OVER,
-} 
+}

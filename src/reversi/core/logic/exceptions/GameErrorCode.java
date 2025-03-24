@@ -16,4 +16,4 @@ public enum GameErrorCode {
     public String getDefaultMessage() {
         return defaultMessage;
     }
-} 
+}

@@ -5,34 +5,34 @@
  */
 package reversi.ui.console;
 
-
 import java.util.Scanner;
-
 import reversi.model.input.InputInformation;
 import reversi.model.input.InputType;
 
-public class Input{//静态方法类
+public class Input {// 静态方法类
     private static final Scanner scanner = new Scanner(System.in);
 
     public static InputInformation getInput() {
-            // 第一步：读取输入
-            while (!scanner.hasNextLine()){} //wait for input
-                String rawInput = scanner.nextLine();
-            // 第二步：判断输入类型
-            InputType infoType = determineType(rawInput);
-            
-            // 第三步：根据输入类型创建对应的信息对象
-            return InputInformation.create(infoType, rawInput);
+        // 第一步：读取输入
+        while (!scanner.hasNextLine()) {
+        } // wait for input
+        String rawInput = scanner.nextLine();
+        // 第二步：判断输入类型
+        InputType infoType = determineType(rawInput);
+
+        // 第三步：根据输入类型创建对应的信息对象
+        return InputInformation.create(infoType, rawInput);
 
     }
-    
-    //判断输入类型
+
+    // 判断输入类型
     private static InputType determineType(String input) {
         // 检查是否是坐标
-        if (input.length() == 2 && 
-        ((input.charAt(0) >= 'A' && input.charAt(0) <= 'H') || 
-        (input.charAt(0) >= 'a' && input.charAt(0) <= 'h')) &&
-        (input.charAt(1) >= '1' && input.charAt(1) <= '8')) {
+        if (input.length() == 2 &&
+                ((input.charAt(0) >= 'A' && input.charAt(0) <= 'H') ||
+                        (input.charAt(0) >= 'a' && input.charAt(0) <= 'h'))
+                &&
+                (input.charAt(1) >= '1' && input.charAt(1) <= '8')) {
             return InputType.COORDINATES;
         }
         // 检查是否是pass
@@ -42,18 +42,17 @@ public class Input{//静态方法类
         // 检查是否是quit
         else if (input.toLowerCase().equals("quit")) {
             return InputType.QUIT;
-        }   
+        }
         // 检查是否是newgame
         else if (input.toLowerCase().equals("peace") || input.toLowerCase().equals("reversi")) {
             return InputType.NEWGAME;
         }
         // 检查是否是boardnum
-        else{
+        else {
             try {
-                if(Integer.parseInt(input) >= 1){
+                if (Integer.parseInt(input) >= 1) {
                     return InputType.BOARDNUM;
-                }
-                else{
+                } else {
                     return InputType.INVALID;
                 }
             } catch (NumberFormatException e) {
@@ -62,5 +61,3 @@ public class Input{//静态方法类
         }
     }
 }
-
-

@@ -11,7 +11,7 @@ public class MoveInformation extends InputInformation {
     }
 
     public static MoveInformation create(String input) {
-        int[]  coordinates = new int[2];
+        int[] coordinates = new int[2];
         coordinates[1] = input.charAt(0) - 'A';
         coordinates[0] = input.charAt(1) - '1';
         return new MoveInformation(coordinates);

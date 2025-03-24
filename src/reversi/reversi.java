@@ -1,8 +1,10 @@
 package reversi;
 
 import reversi.core.logic.GameLogic;
-public class reversi {
-    public static void main(String[] args){
+
+public class Reversi {
+    public static void main(String[] args) {
+        //游戏主循环
         GameLogic.gameLoop();
     }
 }

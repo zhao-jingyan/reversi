@@ -24,7 +24,7 @@ public class PeaceBoard extends Board {
                 }
             }
         }
-    } 
+    }
 
     @Override
     public void flip(int[] input) {

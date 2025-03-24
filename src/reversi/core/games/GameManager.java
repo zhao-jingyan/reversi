@@ -18,7 +18,7 @@ public final class GameManager {
     private GameManager() {
         games = new HashMap<>();
         createGame("Bill_Black", "Walt_White", GameMode.PEACE);
-        //createGame("Bill_Black", "Walt_White", GameMode.REVERSI);
+        createGame("Bill_Black", "Walt_White", GameMode.REVERSI);
         try {
             switchToGame(1);
         } catch (GameException e) {
@@ -33,24 +33,24 @@ public final class GameManager {
     public void createGame(String p1Name, String p2Name, GameMode gameMode) {
         Game game = new Game(games.size() + 1, p1Name, p2Name, gameMode);
         games.put(game.getGameNum(), game);
-    }    
-    
+    }
+
     public void switchToGame(int gameNum) {
         if (games.get(gameNum) != null) {
             currentGame = games.get(gameNum);
         } else {
-            throw new GameException(GameErrorCode.GAME_NOT_FOUND, 
-                "Game " + gameNum + " does not exist");
+            throw new GameException(GameErrorCode.GAME_NOT_FOUND,
+                    "Game " + gameNum + " does not exist");
         }
     }
 
     public void updateCurrentGame(InputInformation info) {
         try {
-            switch(info.getInputType()) {
-                case COORDINATES -> currentGame.update((int[])info.getInfo());
-                case PASS -> currentGame.update(new int[]{-1, -1});
-                default -> throw new GameException(GameErrorCode.INVALID_INPUT, 
-                    "Invalid input");
+            switch (info.getInputType()) {
+                case COORDINATES -> currentGame.update((int[]) info.getInfo());
+                case PASS -> currentGame.update(new int[] { -1, -1 });
+                default -> throw new GameException(GameErrorCode.INVALID_INPUT,
+                        "Invalid input");
             }
         } catch (GameException e) {
             throw e;
@@ -85,4 +85,4 @@ public final class GameManager {
         }
         return gameModes;
     }
-} 
+}

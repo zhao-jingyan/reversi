@@ -26,4 +26,4 @@ public class NewGameInformation extends InputInformation {
         return gameMode;
     }
 
-} 
+}

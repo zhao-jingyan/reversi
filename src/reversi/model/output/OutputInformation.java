@@ -5,7 +5,6 @@ import reversi.core.games.game.GameMode;
 import reversi.core.games.game.board.Board;
 import reversi.core.games.game.spot.Player;
 
-
 public class OutputInformation {
     private final Board board;
     private final int gameNum;
@@ -59,5 +58,4 @@ public class OutputInformation {
         return outputType;
     }
 
-    
 }

@@ -22,4 +22,4 @@ public class QuitInformation extends InputInformation {
         return null;
     }
 
-} 
+}

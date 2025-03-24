@@ -10,22 +10,23 @@ import reversi.model.output.OutputType;
 import reversi.ui.console.Input;
 import reversi.ui.console.Output;
 
-public class GameLogic {
+public class GameLogic {// 单例类
     private static final GameLogic instance = new GameLogic();
     private static OutputType outputType;
-    
+
     private GameLogic() {
         outputType = OutputType.REFRESH;
-        
+
     }
-    
+
     public static GameLogic getInstance() {
         return instance;
     }
-    
-    public static void gameLoop(){
+
+    // 游戏循环
+    public static void gameLoop() {
         Output.print(outputBuilder(outputType));
-        while(logicShouldContinue()){
+        while (logicShouldContinue()) {
             try {
                 handleInput(Input.getInput());
                 checkGameOver();
@@ -42,17 +43,18 @@ public class GameLogic {
                 outputType = OutputType.QUIT;
             }
             case BOARDNUM -> {
+                //截获越界的棋盘数
                 try {
-                    int gameNum = (int)input.getInfo();
+                    int gameNum = (int) input.getInfo();
                     GameManager.getInstance().switchToGame(gameNum);
                     outputType = OutputType.REFRESH;
                 } catch (Exception e) {
-                    throw new GameException(GameErrorCode.GAME_NOT_FOUND, 
-                        "Game " + input.getInfo() + " does not exist");
+                    throw new GameException(GameErrorCode.GAME_NOT_FOUND,
+                            "Game " + input.getInfo() + " does not exist");
                 }
             }
             case NEWGAME -> {
-                GameManager.getInstance().createGame("Bill_Black", "Walt_White", (GameMode)input.getInfo());
+                GameManager.getInstance().createGame("Bill_Black", "Walt_White", (GameMode) input.getInfo());
                 outputType = OutputType.REFRESH;
             }
             case COORDINATES -> {
@@ -64,8 +66,8 @@ public class GameLogic {
                 outputType = OutputType.REFRESH;
             }
             default -> {
-                throw new GameException(GameErrorCode.INVALID_INPUT, 
-                    "Invalid input");
+                throw new GameException(GameErrorCode.INVALID_INPUT,
+                        "Invalid input");
             }
         }
     }

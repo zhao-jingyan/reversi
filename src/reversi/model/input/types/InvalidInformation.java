@@ -5,7 +5,7 @@ import reversi.model.input.InputType;
 
 public class InvalidInformation extends InputInformation {
 
-    private InvalidInformation(){
+    private InvalidInformation() {
     }
 
     public static InvalidInformation create() {
@@ -21,4 +21,4 @@ public class InvalidInformation extends InputInformation {
     public Object getInfo() {
         return null;
     }
-} 
+}

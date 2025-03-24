@@ -6,13 +6,13 @@ package reversi.core.games.game.board;
 public class Piece {
     private PieceStatus status;
 
-    //construct a piece
-    //can only be accessed by board
+    // construct a piece
+    // can only be accessed by board
     public Piece() {
         status = PieceStatus.EMPTY;
     }
 
-    //add a piece
+    // add a piece
     public void add(PieceStatus status) {
         this.status = status;
     }
@@ -25,7 +25,7 @@ public class Piece {
         this.status = PieceStatus.WHITE;
     }
 
-    //remove a piece
+    // remove a piece
     public void remove() {
         this.status = PieceStatus.EMPTY;
     }
@@ -34,7 +34,7 @@ public class Piece {
         this.status = PieceStatus.VALID;
     }
 
-    //flip a piece
+    // flip a piece
     public void flip() {
         if (status == PieceStatus.BLACK)
             status = PieceStatus.WHITE;
@@ -42,7 +42,7 @@ public class Piece {
             status = PieceStatus.BLACK;
     }
 
-    //get the status of the piece
+    // get the status of the piece
     public PieceStatus getStatus() {
         return status;
     }

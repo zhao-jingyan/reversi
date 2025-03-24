@@ -6,8 +6,8 @@ package reversi.core.games.game.board;
  */
 public enum PieceStatus {
     EMPTY, VALID, BLACK, WHITE;
-    
-    //get the opposite piece type
+
+    // get the opposite piece type
     public PieceStatus opp() {
         return switch (this) {
             case BLACK -> WHITE;
