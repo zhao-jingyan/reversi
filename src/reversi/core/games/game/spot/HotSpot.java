@@ -47,11 +47,16 @@ public class HotSpot {
                 handleNoValidMoves(board);
             }
             else{
-                throw new GameException(GameErrorCode.MAY_NOT_PASS, 
+                if(status == SpotStatus.MOVE){
+                    throw new GameException(GameErrorCode.MAY_NOT_PASS, 
                     "Cannot pass when there are valid moves");
-            }
+                }
+                else if (status == SpotStatus.END){
+                    throw new GameException(GameErrorCode.MAY_NOT_PASS, 
+                    "Game is over");
+                }
+            }   
         }
-        
         // 正常落子的逻辑
         else if (board.isValid(coordinate)) {
             board.add(chargePlayer.getPiecetype(), coordinate);

@@ -18,7 +18,7 @@ public final class GameManager {
     private GameManager() {
         games = new HashMap<>();
         createGame("Bill_Black", "Walt_White", GameMode.PEACE);
-        createGame("Bill_Black", "Walt_White", GameMode.REVERSI);
+        //createGame("Bill_Black", "Walt_White", GameMode.REVERSI);
         try {
             switchToGame(1);
         } catch (GameException e) {

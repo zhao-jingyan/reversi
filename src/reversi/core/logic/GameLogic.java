@@ -31,7 +31,7 @@ public class GameLogic {
                 checkGameOver();
                 Output.print(outputBuilder(outputType));
             } catch (GameException e) {
-                handleError(e);
+                handleError(e, outputBuilder(outputType));
             }
         }
     }
@@ -70,16 +70,16 @@ public class GameLogic {
         }
     }
 
-    private static void handleError(Exception e) {
+    private static void handleError(Exception e, OutputInformation output) {
         outputType = OutputType.INVALID_INPUT;
-        System.err.println(e.getMessage());
+        Output.printError(e, output);
     }
 
     private static void checkGameOver() {
         if (GameManager.getInstance().isCurrentGameOver()) {
             outputType = OutputType.GAME_OVER;
         }
-        else if (GameManager.getInstance().isAllGamesOver()) {
+        if (GameManager.getInstance().isAllGamesOver()) {
             outputType = OutputType.ALL_GAMES_OVER;
         }
     }
