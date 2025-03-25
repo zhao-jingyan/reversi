@@ -2,6 +2,7 @@ package reversi.core.games;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import reversi.core.games.game.Game;
 import reversi.core.games.game.GameMode;
 import reversi.core.games.game.board.Board;

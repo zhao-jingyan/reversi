@@ -109,17 +109,7 @@ public class ReversiBoard extends Board {
         PieceStatus piece = type;
         PieceStatus opp = type.opp();
 
-        if (!(xp + dx >= 0 && xp + dx < 8 && yp + dy >= 0 && yp + dy < 8) || board[xp + dx][yp + dy].getStatus() != opp)// not
-                                                                                                                        // in
-                                                                                                                        // boarder
-                                                                                                                        // or
-                                                                                                                        // not
-                                                                                                                        // having
-                                                                                                                        // an
-                                                                                                                        // opposite
-                                                                                                                        // piece
-                                                                                                                        // in
-                                                                                                                        // line
+        if (!(xp + dx >= 0 && xp + dx < 8 && yp + dy >= 0 && yp + dy < 8) || board[xp + dx][yp + dy].getStatus() != opp)// not in board or no opp
             return false;
         else {
             xp += dx;

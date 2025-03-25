@@ -43,7 +43,7 @@ public class GameLogic {// 单例类
                 outputType = OutputType.QUIT;
             }
             case BOARDNUM -> {
-                //截获越界的棋盘数
+                // 截获越界的棋盘数
                 try {
                     int gameNum = (int) input.getInfo();
                     GameManager.getInstance().switchToGame(gameNum);
@@ -78,11 +78,13 @@ public class GameLogic {// 单例类
     }
 
     private static void checkGameOver() {
-        if (GameManager.getInstance().isCurrentGameOver()) {
-            outputType = OutputType.GAME_OVER;
-        }
-        if (GameManager.getInstance().isAllGamesOver()) {
-            outputType = OutputType.ALL_GAMES_OVER;
+        if (outputType != OutputType.QUIT) {
+            if (GameManager.getInstance().isCurrentGameOver()) {
+                outputType = OutputType.GAME_OVER;
+            }
+            if (GameManager.getInstance().isAllGamesOver()) {
+                outputType = OutputType.ALL_GAMES_OVER;
+            }
         }
     }
 

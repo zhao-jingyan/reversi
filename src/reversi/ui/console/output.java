@@ -4,6 +4,7 @@ import java.io.IOException;
 import reversi.core.games.game.GameMode;
 import reversi.core.games.game.board.Piece;
 import reversi.core.games.game.board.PieceStatus;
+import reversi.core.games.game.spot.SpotStatus; 
 import reversi.model.output.OutputInformation;
 
 public class Output {// 静态方法类
@@ -23,8 +24,9 @@ public class Output {// 静态方法类
                 System.out.printf(
                         "\n< Coordinates(A1-H8) | Game Num(1-%d) | New Game(peace,reversi) | Pass(pass) | Quit(quit) >\n",
                         output.getGameList().length);
-                System.out.printf("[%-10s %c] > ", output.getChargePlayer().getName(),
-                        output.getChargePlayer().getPiecetype() == PieceStatus.BLACK ? '○' : '●');
+                System.out.printf("[%-10s %c]%s> ", output.getChargePlayer().getName(),
+                        output.getChargePlayer().getPiecetype() == PieceStatus.BLACK ? '○' : '●',
+                        output.getSpotStatus() == SpotStatus.NOVALID ? " (should pass) " : " ");
             }
             case GAME_OVER -> {
                 clear();
@@ -56,6 +58,8 @@ public class Output {// 静态方法类
     private static void printGameOver(OutputInformation output) {
         System.out.println("\nGame Over!");
         if (output.getGameMode() == GameMode.REVERSI) {
+            System.out.printf("Player[%s ○]: %d\n", output.getP1Name(), output.getBoard().getBlack());
+            System.out.printf("Player[%s ●]: %d\n", output.getP2Name(), output.getBoard().getWhite());
             if (output.getBoard().getBlack() > output.getBoard().getWhite()) {
                 System.out.printf("Player[%s %c] wins!\n", output.getP1Name(),
                         output.getChargePlayer().getPiecetype() == PieceStatus.BLACK ? '○' : '●');
@@ -118,7 +122,7 @@ public class Output {// 静态方法类
                 output.getChargePlayer().getPiecetype() == pieceType ? (pieceType == PieceStatus.BLACK ? '○' : '●')
                         : ' ');
         if (output.getGameMode() != GameMode.PEACE) {
-            System.out.printf(" %d%-4s", score, "");
+            System.out.printf(" %-2d%-3s", score, "");
         } else {
             System.out.printf("%-6s", "");
         }
@@ -128,10 +132,11 @@ public class Output {// 静态方法类
     public static void printError(Exception e, OutputInformation output) {
         System.err.println(e.getMessage());
         System.out.printf(
-                "< Coordinates(A1-H8) | Game Num(1-%d) | New Game(peace,reversi) | Pass(pass) | Quit(quit) > \n",
+                "\n< Coordinates(A1-H8) | Game Num(1-%d) | New Game(peace,reversi) | Pass(pass) | Quit(quit) > \n",
                 output.getGameList().length);
-        System.out.printf("[%-10s %c] > ", output.getChargePlayer().getName(),
-                output.getChargePlayer().getPiecetype() == PieceStatus.BLACK ? '○' : '●');
+        System.out.printf("[%-10s %c]%s> ", output.getChargePlayer().getName(),
+                output.getChargePlayer().getPiecetype() == PieceStatus.BLACK ? '○' : '●',
+                output.getSpotStatus() == SpotStatus.NOVALID ? " (should pass) " : " ");
     }
 
     // 清除控制台

@@ -4,6 +4,7 @@ import reversi.core.games.GameManager;
 import reversi.core.games.game.GameMode;
 import reversi.core.games.game.board.Board;
 import reversi.core.games.game.spot.Player;
+import reversi.core.games.game.spot.SpotStatus;
 
 public class OutputInformation {
     private final Board board;
@@ -11,11 +12,13 @@ public class OutputInformation {
     private final String p1name;
     private final String p2name;
     private final Player chargeplayer;
+    private final SpotStatus status;
     private final GameMode gameMode;
     private final GameMode[] gameList;
     private final OutputType outputType;
 
     public OutputInformation(GameManager instance, OutputType outputType) {
+        this.status = instance.getCurrentGame().getSpot().getSpotStatus();
         this.board = instance.getCurrentBoard();
         this.gameNum = instance.getCurrentGame().getGameNum();
         this.p1name = instance.getCurrentGame().getSpot().getP1().getName();
@@ -58,4 +61,7 @@ public class OutputInformation {
         return outputType;
     }
 
+    public SpotStatus getSpotStatus() {
+        return status;
+    }
 }

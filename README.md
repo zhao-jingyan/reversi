@@ -2,287 +2,122 @@
 
 ## 运行命令
 
+    #reversi目录下
+
+        java -jar reversi.jar
+        
 ## 文档结构
 
-    .
-    ├── README.md
-    ├── README.pdf
-    ├── bin
-    │   └── reversi
-    │       ├── core
-    │       │   └── game
-    │       │       ├── board
-    │       │       │   ├── board.class
-    │       │       │   ├── piece.class
-    │       │       │   └── piecestatus.class
-    │       │       ├── game.class
-    │       │       ├── spot
-    │       │       │   ├── hotspot.class
-    │       │       │   └── player.class
-    │       │       └── spotstatus.class
-    │       ├── reversi.class
-    │       └── ui
-    │           ├── console
-    │           │   ├── input.class
-    │           │   └── output.class
-    │           └── gui
-    ├── oldfiles
-    │   ├── README_oldversion1.0.md
-    │   ├── pic_v1
-    │   │   ├── screenshot1.png
-    │   │   ├── screenshot2.png
-    │   │   ├── screenshot3.png
-    │   │   ├── screenshot4.png
-    │   │   ├── screenshot5.png
-    │   │   └── screenshot6.png
-    │   └── pic_v2
-    │       ├── screenshot1.png
-    │       ├── screenshot2.png
-    │       └── screenshot3.png
-    ├── pic
-    │   ├── screenshot1.png
-    │   ├── screenshot2.png
-    │   ├── screenshot3.png
-    │   └── screenshot4.png
-    └── src
-        └── reversi
-            ├── core
-            │   └── game
-            │       ├── board
-            │       │   ├── board.java
-            │       │   ├── piece.java
-            │       │   └── piecestatus.java
-            │       ├── game.java
-            │       ├── spot
-            │       │   ├── hotspot.java
-            │       │   └── player.java
-            │       └── spotstatus.java
-            ├── reversi.java
-            └── ui
-                ├── console
-                │   ├── input.java
-                │   └── output.java
-                └── gui
-    
-    23 directories, 36 files
+    ./src
+    └── reversi
+        ├── Reversi.java
+        ├── core
+        │   ├── games
+        │   │   ├── GameManager.java
+        │   │   └── game
+        │   │       ├── Game.java
+        │   │       ├── GameMode.java
+        │   │       ├── board
+        │   │       │   ├── Board.java
+        │   │       │   ├── PeaceBoard.java
+        │   │       │   ├── Piece.java
+        │   │       │   ├── PieceStatus.java
+        │   │       │   └── ReversiBoard.java
+        │   │       └── spot
+        │   │           ├── HotSpot.java
+        │   │           ├── Player.java
+        │   │           └── SpotStatus.java
+        │   └── logic
+        │       ├── GameLogic.java
+        │       └── exceptions
+        │           ├── GameErrorCode.java
+        │           └── GameException.java
+        ├── model
+        │   ├── input
+        │   │   ├── InputInformation.java
+        │   │   ├── InputType.java
+        │   │   └── types
+        │   │       ├── InvalidInformation.java
+        │   │       ├── MoveInformation.java
+        │   │       ├── NewGameInformation.java
+        │   │       ├── PassInformation.java
+        │   │       ├── QuitInformation.java
+        │   │       └── SwitchBoardInformation.java
+        │   └── output
+        │       ├── OutputInformation.java
+        │       └── OutputType.java
+        └── ui
+            └── console
+                ├── Input.java
+                └── Output.java
+
+    15 directories, 27 files
+
 
 ---
 
 ## 类的功能分解
 
-### 核心游戏逻辑 (Core Game Logic)
-1. `game` 类：游戏主控制器
-    - 管理单个游戏实例
-    - 协调棋盘和玩家操作
-    - 提供游戏状态查询接口
-    - 处理游戏进程控制
+### core 包 - 核心游戏逻辑
 
-2. `hotspot` 类：回合控制器
-    - 实现"热座"模式的玩家轮换机制
-    - 管理当前行动玩家和等待玩家
-    - 处理玩家移动验证
-    - 控制游戏状态转换
+1. `games` 子包
+   - 游戏实例管理
+   - gameManager管理game，game管理board和hotSpot，board管理棋子，hotSpot管理player和游戏进程
 
-3. `spotstatus` 枚举：游戏状态
-    - `MOVE`：等待正常移动
-    - `INVALID`：上一步移动非法
-    - `END`：游戏结束
+2. `logic` 子包
+   - 游戏主循环控制
+   - 游戏状态管理
+   - 错误处理
+   - gameLogic管理gameManager 对inputInformation做拆包，构造outputInformation，并调用ui包的Input和Output类进行输入输出
+   - hotspot开始向外抛出错误，gameLogic捕获错误，并调用ui包的Output类进行输出
 
-### 棋盘管理 (Board Management)
-1. `board` 类：棋盘控制器
-    - 维护 8x8 棋盘状态
-    - 处理棋子放置和翻转逻辑
-    - 计算有效移动位置
-    - 提供棋盘状态查询
-    - 统计黑白棋子数量
+### model 包 - 数据模型
 
-2. `piece` 类：棋子实体
-    - 维护单个棋子状态
-    - 提供状态转换方法
-    - 实现棋子翻转逻辑
+1. `input` 子包
+   - 输入信息封装
+   - 输入类型定义
+   - 输入验证
+   - 包含：`InputInformation`, `InputType` 等类
+   - InputInformation由多态实现，具体实现类有：`NewGameInformation`, `MoveInformation`, `PassInformation`, `SwitchBoardInformation`, `QuitInformation`
 
-3. `piecestatus` 枚举：棋子状态
-    - `BLACK`：黑棋
-    - `WHITE`：白棋
-    - `EMPTY`：空位
-    - `VALID`：可落子位置
+2. `output` 子包
+   - 输出信息封装
+   - 输出类型定义
+   - 包含：`OutputInformation`, `OutputType` 等类
 
-### 玩家管理 (Player Management)
-1. `player` 类：玩家实体
-    - 存储玩家基本信息（名字）
-    - 管理玩家执子颜色
-    - 提供玩家信息查询接口
+### ui 包 - 用户界面
 
-### 用户界面 (User Interface)
-1. `input` 类：输入控制器
-    - 处理用户输入（A1-H8 格式）
-    - 验证输入合法性
-    - 转换坐标格式
-    - 支持游戏切换指令
-
-2. `output` 类：显示控制器
-    - 渲染棋盘状态
-    - 显示玩家信息
-    - 提供游戏状态反馈
-    - 实现跨平台清屏功能
-
-## UML 类图
-
-### 关系说明
-1. 组合关系（实线箭头 -->）
-    - 表示强依赖，整体与部分的生命周期绑定
-    - 例如：`board` 包含多个 `piece` 实例
-    - `game` 包含 `board` 和 `hotspot` 实例
-
-2. 依赖关系（虚线箭头 ..>）
-    - 表示运行时的调用关系
-    - 例如：`hotspot` 调用 `board` 的方法
-    - `output` 访问其他类获取显示信息
-
-3. 关联关系（实线 -）
-    - 表示类之间的静态关系
-    - 例如：`player` 和 `piecestatus` 的关联
-
-```mermaid
-classDiagram
-    %% 主类
-    class reversi {
-        +static void main(String[])
-    }
-
-    %% 核心游戏逻辑
-    class game {
-        -board board
-        -hotspot spot
-        -static int count
-        +int gameNum
-        +game(String, String)
-        +makeMove(int[])
-        +getBoard()
-        +getSpot()
-    }
-
-    class hotspot {
-        -player p1
-        -player p2
-        -player player_charge
-        -player player_idle
-        -spotstatus status
-        +hotspot(String, String)
-        +initialize()
-        +makeMove(board, int[])
-        +tryToSwap(board)
-        -switchSpot()
-        +getChargePlayer()
-        +getSpotStatus()
-    }
-
-    class spotstatus {
-        <<enumeration>>
-        MOVE
-        INVALID
-        END
-    }
-
-    %% 棋盘管理
-    class board {
-        -piece[][] board
-        -int white
-        -int black
-        +board()
-        +clear()
-        +add(piecestatus, int[])
-        +flip(int[])
-        +refreshValid(piecestatus)
-        +isValid(int[])
-        +noValid()
-        +isfull()
-        +getWhite()
-        +getBlack()
-        +getPieceBoard()
-    }
-
-    class piece {
-        -piecestatus status
-        +piece()
-        +add(piecestatus)
-        +remove()
-        +flip()
-        +targetValid()
-        +getStatus()
-    }
-
-    class piecestatus {
-        <<enumeration>>
-        EMPTY
-        BLACK
-        WHITE
-        VALID
-        +opp()
-    }
-
-    %% 玩家管理
-    class player {
-        -String name
-        -piecestatus piecetype
-        +player(String, piecestatus)
-        +getName()
-        +getPiecetype()
-    }
-
-    %% 用户界面
-    class input {
-        -String inputString
-        -Scanner scanner
-        +input()
-        +getInput()
-        -String_is_valid(String)
-        -formatCoordinate(String)
-        -String_is_valid_num(String)
-    }
-
-    class output {
-        +output()
-        +print(game[])
-        -clear()
-    }
-
-    %% 关系定义
-    reversi --> game
-    reversi --> input
-    reversi --> output
-    game --> board
-    game --> hotspot
-    board --> piece
-    hotspot --> player
-    player --> piecestatus
-    piece --> piecestatus
-    hotspot ..> board
-    output ..> game
-    output ..> board
-    output ..> player
-    game ..> input
-    game ..> output
-```
+1. `console` 子包
+   - 控制台输入处理
+   - 控制台输出格式化
+   - 包含：`Input`, `Output` 等静态工具类，仅在 gameloop() 中使用
 
 ## 运行截图
 
-### 初始化,x提示可以落子的位置
-
+### 游戏开始界面，黑方进行落子
 ![screenshot1](./pic/screenshot1.png)
 
-### 黑棋进行落子
-
+### 游戏进行，白方进行落子
 ![screenshot2](./pic/screenshot2.png)
 
-### 白棋进行落子
-
+### 黑方切换到棋盘二
 ![screenshot3](./pic/screenshot3.png)
 
-### 切换棋盘
-
+### 棋盘二的初始布局有所调整，便于测试，release版还是中央四个
 ![screenshot4](./pic/screenshot4.png)
 
-## P. S.
+### 黑方落子后白方无棋可走，提示should pass
+![screenshot5](./pic/screenshot5.png)
 
-重写中使用了llm辅助，生成了一些函数和注释。readme文档中类的关系说明，uml图由llm生成  
+### 黑方落子到A3
+![screenshot6](./pic/screenshot6.png)
+
+### 游戏结束，结算信息，黑方创建新棋盘reversi
+![screenshot7](./pic/screenshot7.png)
+
+### 创建后gamelist刷新，保留在game2
+![screenshot8](./pic/screenshot8.png)
+
+### 切换到game3，测试切换不存在的棋盘，非法pass，无效输入，冲突落子，退出
+![screenshot9](./pic/screenshot9.png)
+
