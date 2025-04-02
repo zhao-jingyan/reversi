@@ -1,73 +1,64 @@
 package reversi.ui.console;
 
 import java.io.IOException;
+
 import reversi.core.games.game.GameMode;
 import reversi.core.games.game.board.Piece;
 import reversi.core.games.game.board.PieceStatus;
-import reversi.core.games.game.spot.SpotStatus; 
+import reversi.core.logic.exceptions.GameErrorCode;
+import reversi.core.logic.exceptions.GameException;
 import reversi.model.output.OutputInformation;
 
-public class Output {// 静态方法类
-    /*
-     * 根据输出类型进行不同的处理
-     * REFRESH: 刷新界面，clear
-     * GAME_OVER: 游戏结束，打印游戏结果
-     * QUIT: 退出游戏
-     * ALL_GAMES_OVER: 所有游戏结束，打印游戏结果
-     * INVALID_INPUT: 无效输入，不clear
-     */
+
+public class Output {
     public static void print(OutputInformation output) {
         switch (output.getOutputType()) {
-            case REFRESH -> {
-                clear();
-                printInfo(output);
-                System.out.printf(
-                        "\n< Coordinates(A1-H8) | Game Num(1-%d) | New Game(peace,reversi) | Pass(pass) | Quit(quit) >\n",
-                        output.getGameList().length);
-                System.out.printf("[%-10s %c]%s> ", output.getChargePlayer().getName(),
-                        output.getChargePlayer().getPiecetype() == PieceStatus.BLACK ? '○' : '●',
-                        output.getSpotStatus() == SpotStatus.NOVALID ? " (should pass) " : " ");
-            }
-            case GAME_OVER -> {
-                clear();
-                printInfo(output);
-                printGameOver(output);
-                System.out.printf("\n< Game Num(1-%d) | New Game(peace,reversi) | Quit(quit) >\n",
-                        output.getGameList().length);
-                System.out.printf("[%-10s %c] > ", output.getChargePlayer().getName(),
-                        output.getChargePlayer().getPiecetype() == PieceStatus.BLACK ? '○' : '●');
-            }
-            case QUIT -> {
-                System.out.println("Goodbye!");
-                System.exit(0);
-            }
-            case ALL_GAMES_OVER -> {
-                clear();
-                printInfo(output);
-                printGameOver(output);
-                System.out.println("\nAll games are over!");
-                System.exit(0);
-            }
-            case INVALID_INPUT -> {
-                System.out.println("Invalid input. Please try again.");
-            }
+                    case REFRESH -> {
+                        clear();
+                        printInfo(output);
+                        System.out.printf(
+                                "\n< Coordinates(A1-H8) | Game Num(1-%d) | New Game(peace,reversi,gomoku) | Pass(pass) | Quit(quit) >\n",
+                                output.getGameList().length);
+                        System.out.printf("[%-10s %c]%s> ", output.getChargePlayer().getName(),
+                                output.getChargePlayer().getPiecetype() == PieceStatus.BLACK ? '○' : '●',
+                                output.getBoard().isWaitingForPass() ? " (should pass) " : " ");
+                    }
+                    case GAME_OVER -> {
+                        clear();
+                        printInfo(output);
+                        printGameOver(output);
+                        System.out.printf("\n< Game Num(1-%d) | New Game(peace,reversi,gomoku) | Quit(quit) >\n",
+                                output.getGameList().length);
+                        System.out.printf("[%-10s %c] > ", output.getChargePlayer().getName(),
+                                output.getChargePlayer().getPiecetype() == PieceStatus.BLACK ? '○' : '●');
+                    }
+                    case QUIT -> {
+                        System.out.println("Goodbye!");
+                        System.exit(0);
+                    }
+                    case ALL_GAMES_OVER -> {
+                        clear();
+                        printInfo(output);
+                        printGameOver(output);
+                        System.out.println("\nAll games are over!");
+                        System.exit(0);
+                    }
+                    default -> throw new IllegalArgumentException("Unexpected value: " + output.getOutputType());
         }
     }
 
     // 打印游戏结束信息
     private static void printGameOver(OutputInformation output) {
         System.out.println("\nGame Over!");
-        if (output.getGameMode() == GameMode.REVERSI) {
-            System.out.printf("Player[%s ○]: %d\n", output.getP1Name(), output.getBoard().getBlack());
-            System.out.printf("Player[%s ●]: %d\n", output.getP2Name(), output.getBoard().getWhite());
-            if (output.getBoard().getBlack() > output.getBoard().getWhite()) {
-                System.out.printf("Player[%s %c] wins!\n", output.getP1Name(),
-                        output.getChargePlayer().getPiecetype() == PieceStatus.BLACK ? '○' : '●');
-            } else if (output.getBoard().getWhite() > output.getBoard().getBlack()) {
-                System.out.printf("Player[%s %c] wins!\n", output.getP2Name(),
-                        output.getChargePlayer().getPiecetype() == PieceStatus.BLACK ? '○' : '●');
-            } else {
-                System.out.println("It's a tie!");
+        if (output.getCurrentGameMode() == GameMode.REVERSI) {
+            System.out.printf("Player[%s ○]: %d\n", output.getPlayer1Name(), output.getBoard().getBlack());
+            System.out.printf("Player[%s ●]: %d\n", output.getPlayer2Name(), output.getBoard().getWhite());
+        }
+        if(output.getWinner() != null) {
+            switch (output.getWinner()) {
+                case BLACK -> System.out.printf("Player[%s ○] wins!\n", output.getPlayer1Name());
+                case WHITE -> System.out.printf("Player[%s ●] wins!\n", output.getPlayer2Name());
+                default -> System.out.println("It's a tie!");
             }
         }
     }
@@ -84,15 +75,23 @@ public class Output {// 静态方法类
                     case EMPTY -> System.out.printf("· ");
                     case BLACK -> System.out.printf("○ ");
                     case WHITE -> System.out.printf("● ");
-                    case VALID -> System.out.printf(output.getGameMode() == GameMode.PEACE ? "· " : "+ ");
+                    case VALID -> System.out.printf(output.getCurrentGameMode() == GameMode.REVERSI ? "+ " : "· ");
                 }
             }
 
             // player info
             switch (row) {
-                case 2 -> System.out.printf("   Game %d%-20s", output.getGameNum(), "");
-                case 3 -> printPlayerInfo(output, output.getP1Name(), PieceStatus.BLACK, output.getBoard().getBlack());
-                case 4 -> printPlayerInfo(output, output.getP2Name(), PieceStatus.WHITE, output.getBoard().getWhite());
+                case 2 -> System.out.printf("   Game %d%-20s", output.getCurrentGameNumber(), "");
+                case 3 -> printPlayerInfo(output, output.getPlayer1Name(), PieceStatus.BLACK, output.getBoard().getBlack());
+                case 4 -> printPlayerInfo(output, output.getPlayer2Name(), PieceStatus.WHITE, output.getBoard().getWhite());
+                case 5 -> {
+                    if(output.getCurrentGameMode() == GameMode.GOMOKU) {
+                        System.out.printf("   Current Round: %-11d", output.getCurrentRound());
+                    }
+                    else {
+                        System.out.printf("%-29s", "");
+                    }
+                }
                 default -> System.out.printf("%-29s", "");
             }
 
@@ -121,23 +120,40 @@ public class Output {// 静态方法类
         System.out.printf("   player[%-10s] %c", playerName,
                 output.getChargePlayer().getPiecetype() == pieceType ? (pieceType == PieceStatus.BLACK ? '○' : '●')
                         : ' ');
-        if (output.getGameMode() != GameMode.PEACE) {
+        if (output.getCurrentGameMode() == GameMode.REVERSI) {
             System.out.printf(" %-2d%-3s", score, "");
         } else {
             System.out.printf("%-6s", "");
         }
     }
 
-    // 打印错误信息
-    public static void printError(Exception e, OutputInformation output) {
-        System.err.println(e.getMessage());
+    public static void printError(GameException e, OutputInformation output) {
+        switch (e.getCode()) {
+            case GameErrorCode.GAME_ALREADY_OVER -> {
+                System.err.println(e.getMessage());
+            }
+            case GameErrorCode.GAME_NOT_FOUND -> {
+                System.err.println(e.getMessage());
+            }
+            case GameErrorCode.ILLEGAL_MOVE -> {
+                System.err.println(e.getMessage());
+            }
+            case GameErrorCode.INVALID_INPUT -> {
+                System.err.println(e.getMessage());
+            }
+            default -> {
+                System.err.println(e.getMessage());
+            }
+        }
         System.out.printf(
-                "\n< Coordinates(A1-H8) | Game Num(1-%d) | New Game(peace,reversi) | Pass(pass) | Quit(quit) > \n",
-                output.getGameList().length);
+            "\n< Coordinates(A1-H8) | Game Num(1-%d) | New Game(peace,reversi,gomoku) | Pass(pass) | Quit(quit) >\n",
+            output.getGameList().length);
         System.out.printf("[%-10s %c]%s> ", output.getChargePlayer().getName(),
-                output.getChargePlayer().getPiecetype() == PieceStatus.BLACK ? '○' : '●',
-                output.getSpotStatus() == SpotStatus.NOVALID ? " (should pass) " : " ");
+        output.getChargePlayer().getPiecetype() == PieceStatus.BLACK ? '○' : '●',
+        output.getBoard().isWaitingForPass() ? " (should pass) " : " ");
     }
+
+
 
     // 清除控制台
     private static void clear() {

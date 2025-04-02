@@ -5,7 +5,7 @@ import reversi.core.games.game.GameMode;
 import reversi.core.logic.exceptions.GameErrorCode;
 import reversi.core.logic.exceptions.GameException;
 import reversi.model.input.InputInformation;
-import reversi.model.output.OutputInformation;
+import reversi.model.output.OutputInfomationFactory;
 import reversi.model.output.OutputType;
 import reversi.ui.console.Input;
 import reversi.ui.console.Output;
@@ -25,14 +25,15 @@ public class GameLogic {// 单例类
 
     // 游戏循环
     public static void gameLoop() {
-        Output.print(outputBuilder(outputType));
+        Output.print(OutputInfomationFactory.create(outputType, GameManager.getInstance()));
         while (logicShouldContinue()) {
             try {
                 handleInput(Input.getInput());
                 checkGameOver();
-                Output.print(outputBuilder(outputType));
+                Output.print(OutputInfomationFactory.create(outputType, GameManager.getInstance()));
             } catch (GameException e) {
-                handleError(e, outputBuilder(outputType));
+                outputType = OutputType.INVALID_INPUT;
+                Output.printError(e, OutputInfomationFactory.create(outputType, GameManager.getInstance()));
             }
         }
     }
@@ -72,11 +73,6 @@ public class GameLogic {// 单例类
         }
     }
 
-    private static void handleError(Exception e, OutputInformation output) {
-        outputType = OutputType.INVALID_INPUT;
-        Output.printError(e, output);
-    }
-
     private static void checkGameOver() {
         if (outputType != OutputType.QUIT) {
             if (GameManager.getInstance().isCurrentGameOver()) {
@@ -92,7 +88,4 @@ public class GameLogic {// 单例类
         return outputType != OutputType.QUIT && outputType != OutputType.ALL_GAMES_OVER;
     }
 
-    private static OutputInformation outputBuilder(OutputType outputType) {
-        return new OutputInformation(GameManager.getInstance(), outputType);
-    }
 }

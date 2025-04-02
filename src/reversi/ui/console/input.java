@@ -6,7 +6,9 @@
 package reversi.ui.console;
 
 import java.util.Scanner;
+
 import reversi.model.input.InputInformation;
+import reversi.model.input.InputInformationFactory;
 import reversi.model.input.InputType;
 
 public class Input {// 静态方法类
@@ -21,7 +23,7 @@ public class Input {// 静态方法类
         InputType infoType = determineType(rawInput);
 
         // 第三步：根据输入类型创建对应的信息对象
-        return InputInformation.create(infoType, rawInput);
+        return InputInformationFactory.create(infoType, rawInput);
 
     }
 
@@ -44,7 +46,7 @@ public class Input {// 静态方法类
             return InputType.QUIT;
         }
         // 检查是否是newgame
-        else if (input.toLowerCase().equals("peace") || input.toLowerCase().equals("reversi")) {
+        else if (input.toLowerCase().equals("peace") || input.toLowerCase().equals("reversi") || input.toLowerCase().equals("gomoku")) {
             return InputType.NEWGAME;
         }
         // 检查是否是boardnum

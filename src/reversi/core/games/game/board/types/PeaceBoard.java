@@ -1,5 +1,7 @@
-package reversi.core.games.game.board;
+package reversi.core.games.game.board.types;
 
+import reversi.core.games.game.board.Board;
+import reversi.core.games.game.board.PieceStatus;
 /*
  * PeaceBoard implements a simple board for PeaceGame
  * It only allows placing pieces without flipping or capturing
@@ -27,7 +29,19 @@ public class PeaceBoard extends Board {
     }
 
     @Override
-    public void flip(int[] input) {
-        // 在和平棋中，不需要翻转棋子
+    public void update(int[] input, PieceStatus type) {
+        round++;
+        //落子
+        add(type, input);
+    }
+
+    @Override
+    public boolean isOver() {
+        return isfull();
+    }
+    
+    @Override
+    public boolean isWaitingForPass() {
+        return false;
     }
 }

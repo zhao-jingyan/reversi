@@ -3,11 +3,15 @@ package reversi.model.input.types;
 import reversi.model.input.InputInformation;
 import reversi.model.input.InputType;
 
-public class MoveInformation extends InputInformation {
-    private final int[] coordinates;
+/**
+ * 移动信息类
+ * 包含移动的坐标信息
+ */
+public class MoveInformation implements InputInformation {
+    private final int[] move;
 
-    private MoveInformation(int[] coordinates) {
-        this.coordinates = coordinates;
+    private MoveInformation(int[] move) {
+        this.move = move;
     }
 
     public static MoveInformation create(String input) {
@@ -18,12 +22,7 @@ public class MoveInformation extends InputInformation {
     }
 
     @Override
-    public InputType getInputType() {
-        return InputType.COORDINATES;
-    }
-
+    public InputType getInputType() { return InputType.COORDINATES; }
     @Override
-    public int[] getInfo() {
-        return coordinates;
-    }
+    public Object getInfo() { return move; }
 }

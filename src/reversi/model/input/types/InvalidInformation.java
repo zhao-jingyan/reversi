@@ -3,8 +3,11 @@ package reversi.model.input.types;
 import reversi.model.input.InputInformation;
 import reversi.model.input.InputType;
 
-public class InvalidInformation extends InputInformation {
-
+/**
+ * 无效输入信息类
+ * 表示输入无效或无法识别
+ */
+public class InvalidInformation implements InputInformation {
     private InvalidInformation() {
     }
 

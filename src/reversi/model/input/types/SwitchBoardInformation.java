@@ -3,15 +3,19 @@ package reversi.model.input.types;
 import reversi.model.input.InputInformation;
 import reversi.model.input.InputType;
 
-public class SwitchBoardInformation extends InputInformation {
-    private final Integer boardNum;
+/**
+ * 切换棋盘信息类
+ * 包含要切换到的棋盘编号
+ */
+public class SwitchBoardInformation implements InputInformation {
+    private final int boardNumber;
 
-    private SwitchBoardInformation(Integer boardNum) {
-        this.boardNum = boardNum;
+    private SwitchBoardInformation(int boardNumber) {
+        this.boardNumber = boardNumber;
     }
 
     public static SwitchBoardInformation create(String input) {
-        return new SwitchBoardInformation(Integer.valueOf(input));
+        return new SwitchBoardInformation(Integer.parseInt(input));
     }
 
     @Override
@@ -21,6 +25,6 @@ public class SwitchBoardInformation extends InputInformation {
 
     @Override
     public Object getInfo() {
-        return boardNum;
+        return boardNumber;
     }
 }

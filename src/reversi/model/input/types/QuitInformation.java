@@ -3,8 +3,11 @@ package reversi.model.input.types;
 import reversi.model.input.InputInformation;
 import reversi.model.input.InputType;
 
-public class QuitInformation extends InputInformation {
-
+/**
+ * 退出信息类
+ * 表示玩家选择退出游戏
+ */
+public class QuitInformation implements InputInformation {
     private QuitInformation() {
     }
 
@@ -21,5 +24,4 @@ public class QuitInformation extends InputInformation {
     public Object getInfo() {
         return null;
     }
-
 }

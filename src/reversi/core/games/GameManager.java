@@ -6,20 +6,25 @@ import java.util.Map;
 import reversi.core.games.game.Game;
 import reversi.core.games.game.GameMode;
 import reversi.core.games.game.board.Board;
-import reversi.core.games.game.spot.SpotStatus;
 import reversi.core.logic.exceptions.GameErrorCode;
 import reversi.core.logic.exceptions.GameException;
 import reversi.model.input.InputInformation;
 
+/**
+ * 游戏管理器，管理所有游戏实例
+ */
 public final class GameManager {
+    // 单例相关
     private static final GameManager instance = new GameManager();
     private final Map<Integer, Game> games;
     private Game currentGame;
 
+    // 构造函数
     private GameManager() {
         games = new HashMap<>();
         createGame("Bill_Black", "Walt_White", GameMode.PEACE);
         createGame("Bill_Black", "Walt_White", GameMode.REVERSI);
+        createGame("Bill_Black", "Walt_White", GameMode.GOMOKU);
         try {
             switchToGame(1);
         } catch (GameException e) {
@@ -27,13 +32,10 @@ public final class GameManager {
         }
     }
 
-    public static GameManager getInstance() {
-        return instance;
-    }
-
+    // 游戏管理
     public void createGame(String p1Name, String p2Name, GameMode gameMode) {
         Game game = new Game(games.size() + 1, p1Name, p2Name, gameMode);
-        games.put(game.getGameNum(), game);
+        games.put(game.getGameNumber(), game);
     }
 
     public void switchToGame(int gameNum) {
@@ -45,7 +47,13 @@ public final class GameManager {
         }
     }
 
-    public void updateCurrentGame(InputInformation info) {
+    /**
+     * 更新当前游戏状态
+     * 注意：如果游戏已经结束，此方法会抛出GameException
+     * @param info 输入信息
+     * @throws GameException 如果游戏已经结束
+     */
+    public void updateCurrentGame(InputInformation info) throws GameException {
         try {
             switch (info.getInputType()) {
                 case COORDINATES -> currentGame.update((int[]) info.getInfo());
@@ -58,32 +66,19 @@ public final class GameManager {
         }
     }
 
-    public boolean isCurrentGameOver() {
-        return currentGame.getSpotStatus() == SpotStatus.END;
-    }
-
-    public boolean isAllGamesOver() {
-        return games.values().stream().allMatch(game -> game.getSpotStatus() == SpotStatus.END);
-    }
-
-    public Game getCurrentGame() {
-        return currentGame;
-    }
-
-    public Board getCurrentBoard() {
-        return currentGame.getBoard();
-    }
-
-    public int getCurrentGameNum() {
-        return currentGame.getGameNum();
-    }
-
+    // Getters
+    public static GameManager getInstance() { return instance; }
+    public Game getCurrentGame() { return currentGame; }
+    public Board getCurrentBoard() { return currentGame.getBoard(); }
+    public int getCurrentGameNumber() { return currentGame.getGameNumber(); }
     public GameMode[] getGameList() {
         GameMode[] gameModes = new GameMode[games.size()];
         int index = 0;
-        for (Game game : games.values()) {
+        for (Game game : games.values())
             gameModes[index++] = game.getGameMode();
-        }
         return gameModes;
     }
+    public boolean isCurrentGameOver() { return currentGame.isOver(); }
+    public boolean isAllGamesOver() { return games.values().stream().allMatch(game -> game.isOver()); }
+    public int getTotalGames() { return games.size(); }
 }

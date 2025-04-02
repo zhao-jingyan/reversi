@@ -1,118 +1,160 @@
 package reversi.core.games.game.board;
 
 import reversi.core.games.game.GameMode;
+import reversi.core.games.game.board.types.GomokuBoard;
+import reversi.core.games.game.board.types.PeaceBoard;
+import reversi.core.games.game.board.types.ReversiBoard;
 
-/*
- * Board is an abstract class that contains a 2D array of pieces
- * It defines the basic board operations and structure
- * Different game types can extend this class to implement their own board logic
+/**
+ * 棋盘基类
+ * 定义了棋盘的基本结构和操作
+ * 
+ * 棋盘状态说明：
+ * 1. 棋盘大小为8x8
+ * 2. 每个位置可以是以下状态之一：
+ *    - EMPTY: 空位置
+ *    - BLACK: 黑子
+ *    - WHITE: 白子
+ *    - VALID: 有效落子位置
+ * 3. 棋盘维护黑白子的数量统计
+ * 4. 棋盘维护当前回合数
+ * 5. 棋盘维护获胜者信息
  */
 public abstract class Board {
-    protected final Piece[][] board;  //store the piece info
-    protected int white;
-    protected int black;
+    // 棋盘属性
+    protected Piece[][] board;  // 存储棋子信息
+    protected int white;        // 白子数量
+    protected int black;        // 黑子数量
+    protected int round;        // 当前回合数
+    protected PieceStatus winner;  // 获胜者
     
-    //construct an empty board with given size
-    protected Board(){
-        //new board
+    /**
+     * 构造函数
+     * 初始化棋盘状态：
+     * 1. 创建8x8的棋盘
+     * 2. 初始化所有位置为空
+     * 3. 设置回合数为1
+     * 4. 清空棋盘
+     */
+    protected Board() {
+        round = 1;
         board = new Piece[8][8];
-        for (int i = 0; i < 8; i++)
-            for (int j = 0; j < 8; j++)
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
                 board[i][j] = new Piece();
-
-        //clear board
+            }
+        }
         this.clear();
     }
 
-    // 工厂方法，根据类型创建对应的棋盘实例
+    /**
+     * 创建指定类型的棋盘
+     * @param mode 游戏模式
+     * @return 对应类型的棋盘实例
+     * @throws IllegalArgumentException 如果游戏模式不支持
+     */
     public static Board createBoard(GameMode mode) {
-        switch (mode) {
-            case PEACE -> {
-                return new PeaceBoard();
-            }
-            case REVERSI -> {
-                return new ReversiBoard();
-            }
+        return switch (mode) {
+            case PEACE -> new PeaceBoard();
+            case REVERSI -> new ReversiBoard();
+            case GOMOKU -> new GomokuBoard();
             default -> throw new IllegalArgumentException("Unknown board type: " + mode);
-        }
+        };
     }
 
-    //clear the board - template method
-    public final void clear(){
-        //initialize the number of pieces
+    /**
+     * 清空棋盘
+     * 1. 重置黑白子数量
+     * 2. 清空所有位置
+     * 3. 初始化棋盘
+     * 4. 刷新有效位置
+     */
+    public final void clear() {
         white = 0;
         black = 0;
-
-        //clear the board
-        for(Piece[] row: board)
-            for(Piece item: row)
+        for (Piece[] row : board) {
+            for (Piece item : row) {
                 item.remove();
-
-        //initialize board according to game type
+            }
+        }
         initializeBoard();
-
-        //refresh the valid positions
         refreshValid(PieceStatus.BLACK);
     }
 
-    //initialize board according to game type
-    protected abstract void initializeBoard();
-    
-    //refresh valid positions
-    public abstract void refreshValid(PieceStatus type);
-
-    //flip the pieces
-    public abstract void flip(int[] move);
-
-    //adding a move, gamelogic will make sure the input is secure
-    public void add(PieceStatus status ,int[] move){
-        board[move[0]][move[1]].add(status);
-        if(status == PieceStatus.WHITE)
-            white++;
-        else if(status == PieceStatus.BLACK)
-            black++;
-    }
-    
-    //checking board status
-    //check if the move is landed on a valid position
-    public boolean isValid(int[] move){
+    /**
+     * 检查移动是否有效
+     * @param move 移动位置
+     * @return 是否有效
+     */
+    public boolean isValid(int[] move) {
         return move[0] != -2 && board[move[0]][move[1]].getStatus() == PieceStatus.VALID;
     }
-    
-    //check if there is no valid position
-    public boolean noValid(){
-        boolean ans = true;
-        for(int i = 0; i < 8; i++)
-            for(int j = 0; j < 8; j++)
-                if(board[i][j].getStatus() == PieceStatus.VALID)
-                    ans = false;
-        return ans;
+
+    /**
+     * 初始化棋盘
+     * 由子类实现具体的初始化逻辑
+     */
+    protected abstract void initializeBoard();
+
+    /**
+     * 刷新有效位置
+     * @param type 当前玩家类型
+     */
+    public abstract void refreshValid(PieceStatus type);
+
+    /**
+     * 更新棋盘状态
+     * @param move 移动位置
+     * @param type 棋子类型
+     */
+    public abstract void update(int[] move, PieceStatus type);
+
+    /**
+     * 检查游戏是否结束
+     * @return 是否结束
+     */
+    public abstract boolean isOver();
+
+    /**
+     * 检查是否需要跳过回合
+     * @return 是否需要跳过
+     */
+    public abstract boolean isWaitingForPass();
+
+    /**
+     * 添加棋子
+     * @param status 棋子状态
+     * @param move 落子位置
+     */
+    protected void add(PieceStatus status, int[] move) {
+        board[move[0]][move[1]].add(status);
+        if (status == PieceStatus.WHITE) {
+            white++;
+        } else if (status == PieceStatus.BLACK) {
+            black++;
+        }
     }
-    
-    //check if the board is full
-    public boolean isfull(){
-        for(Piece[] row: board)
-            for(Piece item: row)
-                if(item.getStatus() == PieceStatus.EMPTY || item.getStatus() == PieceStatus.VALID)
+
+    /**
+     * 检查棋盘是否已满
+     * @return 是否已满
+     */
+    protected boolean isfull() {
+        for (Piece[] row : board) {
+            for (Piece item : row) {
+                if (item.getStatus() == PieceStatus.EMPTY || item.getStatus() == PieceStatus.VALID) {
                     return false;
+                }
+            }
+        }
         return true;
     }
 
-    //get the number of white pieces
-    public int getWhite(){
-        return white;
-    }
-
-    //get the number of black pieces
-    public int getBlack(){
-        return black;
-    }
-
-    public Piece[][] getPieceBoard(){
-        return board;
-    }
-
-    public PieceStatus getPieceStatus(int[] move){
-        return board[move[0]][move[1]].getStatus();
-    }
+    // Getters
+    public int getWhite() { return white; }
+    public int getBlack() { return black; }
+    public int getCurrentRound() { return round; }
+    public Piece[][] getPieceBoard() { return board; }
+    public PieceStatus getPieceStatus(int[] move) { return board[move[0]][move[1]].getStatus(); }
+    public PieceStatus getWinner() { return winner; }
 }

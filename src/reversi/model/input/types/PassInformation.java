@@ -3,7 +3,11 @@ package reversi.model.input.types;
 import reversi.model.input.InputInformation;
 import reversi.model.input.InputType;
 
-public class PassInformation extends InputInformation {
+/**
+ * 跳过信息类
+ * 表示玩家选择跳过当前回合
+ */
+public class PassInformation implements InputInformation {
     private PassInformation() {
     }
 

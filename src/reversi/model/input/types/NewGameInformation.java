@@ -3,27 +3,28 @@ package reversi.model.input.types;
 import reversi.core.games.game.GameMode;
 import reversi.model.input.InputInformation;
 import reversi.model.input.InputType;
+/**
+ * 新游戏信息类
+ * 包含新游戏的模式信息
+ */
+public class NewGameInformation implements InputInformation {
+    private final GameMode mode;
 
-public class NewGameInformation extends InputInformation {
-    private final GameMode gameMode;
-
-    private NewGameInformation(GameMode gameMode) {
-        this.gameMode = gameMode;
+    private NewGameInformation(GameMode mode) {
+        this.mode = mode;
     }
 
     public static NewGameInformation create(String input) {
-        GameMode gameMode = GameMode.valueOf(input.toUpperCase());
-        return new NewGameInformation(gameMode);
+        return new NewGameInformation(GameMode.valueOf(input.toUpperCase()));
     }
 
     @Override
-    public InputType getInputType() {
-        return InputType.NEWGAME;
+    public InputType getInputType() { 
+        return InputType.NEWGAME; 
     }
 
     @Override
-    public GameMode getInfo() {
-        return gameMode;
+    public Object getInfo() { 
+        return mode; 
     }
-
 }

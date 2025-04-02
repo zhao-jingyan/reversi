@@ -1,9 +1,11 @@
 package reversi.core.games.game.board;
 
-/* piece is a class that contains a piece type 
- * number of black and white pieces are set as private static variables
+/**
+ * 棋子类
+ * 表示棋盘上的一个位置
  */
 public class Piece {
+    // 棋子属性
     private PieceStatus status;
 
     // construct a piece
@@ -12,29 +14,12 @@ public class Piece {
         status = PieceStatus.EMPTY;
     }
 
-    // add a piece
-    public void add(PieceStatus status) {
-        this.status = status;
-    }
-
-    public void addBlack() {
-        this.status = PieceStatus.BLACK;
-    }
-
-    public void addWhite() {
-        this.status = PieceStatus.WHITE;
-    }
-
-    // remove a piece
-    public void remove() {
-        this.status = PieceStatus.EMPTY;
-    }
-
-    public void targetValid() {
-        this.status = PieceStatus.VALID;
-    }
-
-    // flip a piece
+    // 棋子操作
+    public void add(PieceStatus status) { this.status = status; }
+    public void addBlack() { this.status = PieceStatus.BLACK; }
+    public void addWhite() { this.status = PieceStatus.WHITE; }
+    public void remove() { this.status = PieceStatus.EMPTY; }
+    public void targetValid() { this.status = PieceStatus.VALID; }
     public void flip() {
         if (status == PieceStatus.BLACK)
             status = PieceStatus.WHITE;
@@ -42,8 +27,6 @@ public class Piece {
             status = PieceStatus.BLACK;
     }
 
-    // get the status of the piece
-    public PieceStatus getStatus() {
-        return status;
-    }
+    // Getters
+    public PieceStatus getStatus() { return status; }
 }

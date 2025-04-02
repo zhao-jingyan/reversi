@@ -1,67 +1,42 @@
 package reversi.model.output;
 
-import reversi.core.games.GameManager;
 import reversi.core.games.game.GameMode;
 import reversi.core.games.game.board.Board;
+import reversi.core.games.game.board.PieceStatus;
 import reversi.core.games.game.spot.Player;
-import reversi.core.games.game.spot.SpotStatus;
+import reversi.model.output.components.BoardInfo;
+import reversi.model.output.components.GameInfo;
 
+/**
+ * 输出信息类
+ * 包含棋盘信息和游戏信息
+ */
 public class OutputInformation {
-    private final Board board;
-    private final int gameNum;
-    private final String p1name;
-    private final String p2name;
-    private final Player chargeplayer;
-    private final SpotStatus status;
-    private final GameMode gameMode;
-    private final GameMode[] gameList;
-    private final OutputType outputType;
+    private final BoardInfo boardInfo;
+    private final GameInfo gameInfo;
+    private final OutputType type;
 
-    public OutputInformation(GameManager instance, OutputType outputType) {
-        this.status = instance.getCurrentGame().getSpot().getSpotStatus();
-        this.board = instance.getCurrentBoard();
-        this.gameNum = instance.getCurrentGame().getGameNum();
-        this.p1name = instance.getCurrentGame().getSpot().getP1().getName();
-        this.p2name = instance.getCurrentGame().getSpot().getP2().getName();
-        this.chargeplayer = instance.getCurrentGame().getSpot().getChargePlayer();
-        this.gameMode = instance.getCurrentGame().getGameMode();
-        this.gameList = instance.getGameList();
-        this.outputType = outputType;
+    public OutputInformation(BoardInfo boardInfo, GameInfo gameInfo, OutputType type) {
+        this.boardInfo = boardInfo;
+        this.gameInfo = gameInfo;
+        this.type = type;
     }
 
-    public Board getBoard() {
-        return board;
-    }
-
-    public int getGameNum() {
-        return gameNum;
-    }
-
-    public String getP1Name() {
-        return p1name;
-    }
-
-    public String getP2Name() {
-        return p2name;
-    }
-
-    public Player getChargePlayer() {
-        return chargeplayer;
-    }
-
-    public GameMode getGameMode() {
-        return gameMode;
-    }
-
-    public GameMode[] getGameList() {
-        return gameList;
-    }
-
-    public OutputType getOutputType() {
-        return outputType;
-    }
-
-    public SpotStatus getSpotStatus() {
-        return status;
-    }
-}
+    // Getter方法
+    public BoardInfo getBoardInfo() { return boardInfo; }
+    public GameInfo getGameInfo() { return gameInfo; }
+    public OutputType getOutputType() { return type; }
+    public Player getChargePlayer() { return boardInfo.getChargePlayer(); }
+    public int getCurrentGameNumber() { return boardInfo.getCurrentGameNumber(); }
+    public int getTotalGames() { return gameInfo.getTotalGamesNumber(); }
+    public GameMode[] getGameList() { return gameInfo.getGameList(); }
+    public int getWhite() { return boardInfo.getWhite(); }
+    public int getBlack() { return boardInfo.getBlack(); }
+    public Board getBoard() { return boardInfo.getBoard(); }
+    public String getPlayer1Name() { return boardInfo.getPlayer1Name(); }
+    public String getPlayer2Name() { return boardInfo.getPlayer2Name(); }
+    public int getCurrentRound() { return boardInfo.getCurrentRound(); }
+    public int getCurrentGame() { return boardInfo.getCurrentGameNumber(); }
+    public GameMode getCurrentGameMode() { return gameInfo.getCurrentGameMode(); }
+    public PieceStatus getWinner() { return boardInfo.getWinner(); }
+} 

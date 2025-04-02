@@ -2,27 +2,29 @@ package reversi.core.games.game.spot;
 
 import reversi.core.games.game.board.PieceStatus;
 
-/*
- * player is a class that contains a name and a piece type
- * all the actions are conducted by hotspot, so player only contains information
+/**
+ * 玩家类
+ * 表示游戏中的一个玩家
+ * 
+ * 属性说明：
+ * 1. name: 玩家名称
+ * 2. piecetype: 玩家使用的棋子类型（黑/白）
  */
 public class Player {
-    private final String name;
-    private final PieceStatus piecetype;
+    private final String name;        // 玩家名称
+    private final PieceStatus piecetype;  // 棋子类型
 
-    // construct a player with given name and pieceType
+    /**
+     * 构造函数
+     * @param name 玩家名称
+     * @param piecetype 棋子类型
+     */
     public Player(String name, PieceStatus piecetype) {
         this.name = name;
         this.piecetype = piecetype;
     }
 
-    // get the name of the player
-    public String getName() {
-        return name;
-    }
-
-    // get the piece type of the player
-    public PieceStatus getPiecetype() {
-        return piecetype;
-    }
+    // Getters
+    public String getName() { return name; }
+    public PieceStatus getPiecetype() { return piecetype; }
 }
