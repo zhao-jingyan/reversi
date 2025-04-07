@@ -44,12 +44,11 @@ public class HotSpot {
      * @param coordinate 移动坐标
      * @throws GameException 如果移动无效
      */
-    public void makeMove(Board board, int[] coordinate) {
+    public void makeMove(Board board, int[] coordinate) throws GameException {
         // 检查是否是跳过操作
         if (coordinate[0] == -1 && coordinate[1] == -1) {
             if (board.isWaitingForPass()) {
-                chargePlayer = (chargePlayer == p1) ? p2 : p1;
-                board.refreshValid(chargePlayer.getPiecetype());
+                changeSpot(board);
             } else {
                 throw new GameException(GameErrorCode.MAY_NOT_PASS,
                         "Cannot pass when there are valid moves");
@@ -58,20 +57,20 @@ public class HotSpot {
         // 正常落子的逻辑
         else if (board.isValid(coordinate)) {
             board.update(coordinate, chargePlayer.getPiecetype());
-            chargePlayer = (chargePlayer == p1) ? p2 : p1;
-            board.refreshValid(chargePlayer.getPiecetype());
+            changeSpot(board);
         }
         // 如果落子位置无效
         else {
             if (board.getPieceStatus(coordinate) == PieceStatus.WHITE
-                    || board.getPieceStatus(coordinate) == PieceStatus.BLACK) {
+             || board.getPieceStatus(coordinate) == PieceStatus.BLACK) {
                 throw new GameException(GameErrorCode.CONFLICTING_MOVE,
                         "Conflicting move! [" + (char) ('A' + coordinate[1]) + (coordinate[0] + 1)
-                                + "] is already occupied");
-            } else {
+                        + "] is already occupied");
+            } 
+            else {
                 throw new GameException(GameErrorCode.ILLEGAL_MOVE,
                         "Invalid move! [" + (char) ('A' + coordinate[1]) + (coordinate[0] + 1)
-                                + "] is not a valid position");
+                        + "] is not a valid position");
             }
         }
     }
@@ -80,4 +79,10 @@ public class HotSpot {
     public Player getChargePlayer() { return chargePlayer; }
     public Player getPlayer1() { return p1; }
     public Player getPlayer2() { return p2; }
+
+    //change the current player
+    private void changeSpot(Board board) {
+        chargePlayer = (chargePlayer == p1) ? p2 : p1;
+        board.refreshValid(chargePlayer.getPiecetype());
+    }
 }

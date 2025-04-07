@@ -22,10 +22,10 @@ public class ReversiBoard extends Board {
         // 在黑白棋中，初始化时需要在中心放置四个棋子
         white += 2;
         black += 2;
-        board[3][3].addWhite();
-        board[4][4].addWhite();
-        board[4][3].addBlack();
-        board[3][4].addBlack();
+        board[3][3].setWhite();
+        board[4][4].setWhite();
+        board[4][3].setBlack();
+        board[3][4].setBlack();
     }
 
     @Override
@@ -52,7 +52,7 @@ public class ReversiBoard extends Board {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (board[i][j].getStatus() == PieceStatus.VALID) {
-                    board[i][j].remove();
+                    board[i][j].setEmpty();
                 }
             }
         }
@@ -62,7 +62,7 @@ public class ReversiBoard extends Board {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (isValidPosition(type, i, j)) {
-                    board[i][j].targetValid();
+                    board[i][j].setValid();
                     hasValidMove = true;
                 }
             }
@@ -84,7 +84,8 @@ public class ReversiBoard extends Board {
             if (opponentHasValidMove) {
                 // 对方有合法位置，当前玩家需要pass
                 isWaitingForPass = true;
-            } else {
+            } 
+            else {
                 // 双方都没有合法位置，游戏结束
                 isOver = true;
                 // 设置获胜者

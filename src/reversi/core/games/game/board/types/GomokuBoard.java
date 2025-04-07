@@ -27,7 +27,7 @@ public class GomokuBoard extends Board {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (board[i][j].getStatus() != PieceStatus.BLACK && board[i][j].getStatus() != PieceStatus.WHITE) {
-                    board[i][j].targetValid();
+                    board[i][j].setValid();
                 }
             }
         }

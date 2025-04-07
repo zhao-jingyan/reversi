@@ -10,16 +10,16 @@ public class Piece {
 
     // construct a piece
     // can only be accessed by board
-    public Piece() {
+    protected Piece() {
         status = PieceStatus.EMPTY;
     }
 
     // 棋子操作
-    public void add(PieceStatus status) { this.status = status; }
-    public void addBlack() { this.status = PieceStatus.BLACK; }
-    public void addWhite() { this.status = PieceStatus.WHITE; }
-    public void remove() { this.status = PieceStatus.EMPTY; }
-    public void targetValid() { this.status = PieceStatus.VALID; }
+    protected void add(PieceStatus status) { this.status = status; }
+    public void setBlack() { this.status = PieceStatus.BLACK; }
+    public void setWhite() { this.status = PieceStatus.WHITE; }
+    public void setEmpty() { this.status = PieceStatus.EMPTY; }
+    public void setValid() { this.status = PieceStatus.VALID; }
     public void flip() {
         if (status == PieceStatus.BLACK)
             status = PieceStatus.WHITE;

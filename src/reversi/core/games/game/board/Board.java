@@ -74,7 +74,7 @@ public abstract class Board {
         black = 0;
         for (Piece[] row : board) {
             for (Piece item : row) {
-                item.remove();
+                item.setEmpty();
             }
         }
         initializeBoard();
@@ -98,7 +98,7 @@ public abstract class Board {
 
     /**
      * 刷新有效位置
-     * @param type 当前玩家类型
+     * @param type 当前玩家执黑/白
      */
     public abstract void refreshValid(PieceStatus type);
 

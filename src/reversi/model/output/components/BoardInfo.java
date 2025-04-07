@@ -33,10 +33,11 @@ public class BoardInfo {
     public Board getBoard() { return board; }
     public String getPlayer1Name() { return player1Name; }
     public String getPlayer2Name() { return player2Name; }
-    public Player getChargePlayer() { return chargePlayer; }
     public int getCurrentGameNumber() { return currentGameNumber; }
     public int getCurrentRound() { return currentRound; }
     public int getWhite() { return white; }
     public int getBlack() { return black; }
     public PieceStatus getWinner() { return board.getWinner(); }
+    public String getChargePlayerName() { return chargePlayer.getName(); }
+    public PieceStatus getChargePieceType() { return chargePlayer.getPiecetype(); }
 } 
