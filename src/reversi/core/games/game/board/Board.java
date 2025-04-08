@@ -28,12 +28,6 @@ public abstract class Board {
     protected int round;        // 当前回合数
     protected PieceStatus winner;  // 获胜者
 
-    // 方向常量
-    protected static final int[][] DIRECTIONS = {
-        {1, 0}, {-1, 0}, {0, 1}, {0, -1},
-        {1, 1}, {-1, -1}, {1, -1}, {-1, 1}
-    };
-    
     /**
      * 构造函数
      * 初始化棋盘状态：

@@ -37,7 +37,11 @@ public class ReversiBoard extends Board {
         // 再翻转
         int x = input[0];
         int y = input[1];
-        for (int[] dir : DIRECTIONS) {
+        int[][] directions = {
+            {1, 0}, {-1, 0}, {0, 1}, {0, -1},
+            {1, 1}, {-1, -1}, {1, -1}, {-1, 1}
+        };
+        for (int[] dir : directions) {
             this.flipbeam(dir, x, y);
         }
     }
@@ -141,7 +145,11 @@ public class ReversiBoard extends Board {
         if (!isInBoard(x, y) || board[x][y].getStatus() != PieceStatus.EMPTY) {
             return false;
         }
-        for (int[] dir : DIRECTIONS) {
+        int[][] directions = {
+            {1, 0}, {-1, 0}, {0, 1}, {0, -1},
+            {1, 1}, {-1, -1}, {1, -1}, {-1, 1}
+        };
+        for (int[] dir : directions) {
             if (canFlipInDirection(type, x, y, dir)) {
                 return true;
             }
