@@ -37,11 +37,7 @@ public class ReversiBoard extends Board {
         // 再翻转
         int x = input[0];
         int y = input[1];
-        int[][] directions = {
-            {1, 0}, {-1, 0}, {0, 1}, {0, -1},
-            {1, 1}, {-1, -1}, {1, -1}, {-1, 1}
-        };
-        for (int[] dir : directions) {
+        for (int[] dir : DIRECTIONS) {
             this.flipbeam(dir, x, y);
         }
     }
@@ -88,14 +84,7 @@ public class ReversiBoard extends Board {
             else {
                 // 双方都没有合法位置，游戏结束
                 isOver = true;
-                // 设置获胜者
-                if (white > black) {
-                    winner = PieceStatus.WHITE;
-                } else if (black > white) {
-                    winner = PieceStatus.BLACK;
-                } else {
-                    winner = PieceStatus.EMPTY;  // 平局
-                }
+                checkWinner();
             }
         } else {
             // 当前玩家有合法位置，不需要pass
@@ -123,13 +112,13 @@ public class ReversiBoard extends Board {
         int dy = direction[1];
 
         // flip the pieces
-        while ((xp + dx >= 0 && xp + dx < 8 && yp + dy >= 0 && yp + dy < 8)  // in boarder
+        while (isInBoard(xp + dx, yp + dy)  // in boarder
                 && board[xp + dx][yp + dy].getStatus() == piece.opp()) {  // do not meet same piece
             xp += dx;
             yp += dy;
 
             // going back and flip the pieces
-            if (xp + dx >= 0 && xp + dx < 8 && yp + dy >= 0 && yp + dy < 8
+            if (isInBoard(xp + dx, yp + dy)
                     && board[xp + dx][yp + dy].getStatus() == piece) {
                 while (xp != x || yp != y) {
                     if (board[xp][yp].getStatus() == PieceStatus.BLACK) {
@@ -149,15 +138,14 @@ public class ReversiBoard extends Board {
     }
 
     private boolean isValidPosition(PieceStatus type, int x, int y) {
-        if (board[x][y].getStatus() == PieceStatus.BLACK || board[x][y].getStatus() == PieceStatus.WHITE)
+        if (!isInBoard(x, y) || board[x][y].getStatus() != PieceStatus.EMPTY) {
             return false;
-        int[][] directions = {
-            {1, 0}, {-1, 0}, {0, 1}, {0, -1},
-            {1, 1}, {-1, -1}, {1, -1}, {-1, 1}
-        };
-        for (int[] dir : directions)
-            if (canFlipInDirection(type, x, y, dir))
+        }
+        for (int[] dir : DIRECTIONS) {
+            if (canFlipInDirection(type, x, y, dir)) {
                 return true;
+            }
+        }
         return false;
     }
 
@@ -170,12 +158,12 @@ public class ReversiBoard extends Board {
         PieceStatus piece = type;
         PieceStatus opp = type.opp();
 
-        if (!(xp + dx >= 0 && xp + dx < 8 && yp + dy >= 0 && yp + dy < 8) || board[xp + dx][yp + dy].getStatus() != opp)  // not in board or no opp
+        if (!isInBoard(xp + dx, yp + dy) || board[xp + dx][yp + dy].getStatus() != opp)  // not in board or no opp
             return false;
         else {
             xp += dx;
             yp += dy;
-            while ((xp + dx >= 0 && xp + dx < 8 && yp + dy >= 0 && yp + dy < 8)  // in boarder
+            while (isInBoard(xp + dx, yp + dy)  // in boarder
                     && board[xp + dx][yp + dy].getStatus() != PieceStatus.EMPTY
                     && board[xp + dx][yp + dy].getStatus() != PieceStatus.VALID) {  // do not meet empty or valid
                 if (board[xp + dx][yp + dy].getStatus() == piece)

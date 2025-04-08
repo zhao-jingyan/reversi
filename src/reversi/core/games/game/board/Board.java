@@ -27,6 +27,12 @@ public abstract class Board {
     protected int black;        // 黑子数量
     protected int round;        // 当前回合数
     protected PieceStatus winner;  // 获胜者
+
+    // 方向常量
+    protected static final int[][] DIRECTIONS = {
+        {1, 0}, {-1, 0}, {0, 1}, {0, -1},
+        {1, 1}, {-1, -1}, {1, -1}, {-1, 1}
+    };
     
     /**
      * 构造函数
@@ -148,6 +154,29 @@ public abstract class Board {
             }
         }
         return true;
+    }
+
+    /**
+     * 检查坐标是否在棋盘范围内
+     * @param x 横坐标
+     * @param y 纵坐标
+     * @return 是否在范围内
+     */
+    protected boolean isInBoard(int x, int y) {
+        return x >= 0 && x < 8 && y >= 0 && y < 8;
+    }
+
+    /**
+     * 检查并设置获胜者
+     */
+    protected void checkWinner() {
+        if (white > black) {
+            winner = PieceStatus.WHITE;
+        } else if (black > white) {
+            winner = PieceStatus.BLACK;
+        } else {
+            winner = PieceStatus.EMPTY;
+        }
     }
 
     // Getters

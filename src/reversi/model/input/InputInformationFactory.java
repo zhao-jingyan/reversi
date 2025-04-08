@@ -1,6 +1,11 @@
 package reversi.model.input;
 
-import reversi.model.input.types.*;
+import reversi.model.input.types.InvalidInformation;
+import reversi.model.input.types.MoveInformation;
+import reversi.model.input.types.NewGameInformation;
+import reversi.model.input.types.PassInformation;
+import reversi.model.input.types.QuitInformation;
+import reversi.model.input.types.SwitchBoardInformation;
 
 /**
  * 输入信息工厂类
