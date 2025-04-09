@@ -49,30 +49,28 @@ public class HotSpot {
         if (coordinate[0] == -1 && coordinate[1] == -1) {
             if (board.isWaitingForPass()) {
                 changeSpot(board);
-            } else {
-                throw new GameException(GameErrorCode.MAY_NOT_PASS,
-                        "Cannot pass when there are valid moves");
+                return;
             }
+            throw new GameException(GameErrorCode.MAY_NOT_PASS,
+                    "Cannot pass when there are valid moves");
         }
-        // 正常落子的逻辑
-        else if (board.isValid(coordinate)) {
-            board.update(coordinate, chargePlayer.getPiecetype());
-            changeSpot(board);
-        }
-        // 如果落子位置无效
-        else {
+
+        // 检查落子位置是否有效
+        if (!board.isValid(coordinate)) {
             if (board.getPieceStatus(coordinate) == PieceStatus.WHITE
              || board.getPieceStatus(coordinate) == PieceStatus.BLACK) {
                 throw new GameException(GameErrorCode.CONFLICTING_MOVE,
                         "Conflicting move! [" + (char) ('A' + coordinate[1]) + (coordinate[0] + 1)
                         + "] is already occupied");
-            } 
-            else {
-                throw new GameException(GameErrorCode.ILLEGAL_MOVE,
-                        "Invalid move! [" + (char) ('A' + coordinate[1]) + (coordinate[0] + 1)
-                        + "] is not a valid position");
             }
+            throw new GameException(GameErrorCode.ILLEGAL_MOVE,
+                    "Invalid move! [" + (char) ('A' + coordinate[1]) + (coordinate[0] + 1)
+                    + "] is not a valid position");
         }
+
+        // 正常落子的逻辑
+        board.update(coordinate, chargePlayer.getPiecetype());
+        changeSpot(board);
     }
 
     // Getters

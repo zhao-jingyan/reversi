@@ -2,7 +2,6 @@ package reversi.core.games;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import reversi.core.games.game.Game;
 import reversi.core.games.game.GameMode;
 import reversi.core.games.game.board.Board;
@@ -39,12 +38,11 @@ public final class GameManager {
     }
 
     public void switchToGame(int gameNum) {
-        if (games.get(gameNum) != null) {
-            currentGame = games.get(gameNum);
-        } else {
+        if (games.get(gameNum) == null) {
             throw new GameException(GameErrorCode.GAME_NOT_FOUND,
                     "Game " + gameNum + " does not exist");
         }
+        currentGame = games.get(gameNum);
     }
 
     /**

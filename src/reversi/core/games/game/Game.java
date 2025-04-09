@@ -48,16 +48,15 @@ public class Game {
      * @throws GameException 如果游戏已经结束或移动无效
      */
     public void update(int[] coordinate) throws GameException {
-        if (isOver) {
+        if (isOver)
             throw new GameException(GameErrorCode.GAME_ALREADY_OVER, "This game is already over!");
-        } else {
-            try {
-                spot.makeMove(board, coordinate);
-                isOver = board.isOver();  // 同步Board的结束状态
-            } catch (GameException e) {
-                throw e;
-            }
+        try {
+            spot.makeMove(board, coordinate);
+            isOver = board.isOver();  // 同步Board的结束状态
+        } catch (GameException e) {
+            throw e;
         }
+        
     }
 
     // Getters
