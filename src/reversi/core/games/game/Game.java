@@ -2,7 +2,7 @@ package reversi.core.games.game;
 
 import reversi.core.games.game.board.Board;
 import reversi.core.games.game.board.PieceStatus;
-import reversi.core.games.game.spot.HotSpot;
+import reversi.core.games.game.spot.HotSeat;
 import reversi.core.games.game.spot.Player;
 import reversi.core.logic.exceptions.GameErrorCode;
 import reversi.core.logic.exceptions.GameException;
@@ -21,7 +21,7 @@ public class Game {
     private final int gameNum;      // 游戏编号
     private final GameMode gameMode;  // 游戏模式
     private final Board board;      // 棋盘
-    private final HotSpot spot;     // 玩家管理器
+    private final HotSeat spot;     // 玩家管理器
     private boolean isOver;         // 游戏是否结束
 
     /**
@@ -34,7 +34,7 @@ public class Game {
     public Game(int gameNum, String p1Name, String p2Name, GameMode gameMode) {
         this.gameNum = gameNum;
         this.board = Board.createBoard(gameMode);
-        this.spot = new HotSpot(p1Name, p2Name);
+        this.spot = new HotSeat(p1Name, p2Name);
         this.gameMode = gameMode;
         this.isOver = false;
         board.clear();
@@ -63,7 +63,7 @@ public class Game {
     public int getGameNumber() { return gameNum; }
     public GameMode getGameMode() { return gameMode; }
     public Board getBoard() { return board; }
-    public HotSpot getSpot() { return spot; }
+    public HotSeat getSpot() { return spot; }
     public boolean isOver() { return isOver; }
     public Player getPlayer1() { return spot.getPlayer1(); }
     public Player getPlayer2() { return spot.getPlayer2(); }

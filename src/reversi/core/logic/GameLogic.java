@@ -49,7 +49,7 @@ public class GameLogic {// 单例类
                     int gameNum = (int) input.getInfo();
                     GameManager.getInstance().switchToGame(gameNum);
                     outputType = OutputType.REFRESH;
-                } catch (Exception e) {
+                } catch (GameException e) {
                     throw new GameException(GameErrorCode.GAME_NOT_FOUND,
                             "Game " + input.getInfo() + " does not exist");
                 }

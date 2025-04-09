@@ -22,7 +22,7 @@ import reversi.core.logic.exceptions.GameException;
  * 3. 处理玩家的行动（落子或跳过）
  * 4. 在玩家行动后自动切换当前玩家
  */
-public class HotSpot {
+public class HotSeat {
     private final Player p1;          // 玩家1
     private final Player p2;          // 玩家2
     private Player chargePlayer;      // 当前行动玩家
@@ -32,7 +32,7 @@ public class HotSpot {
      * @param p1Name 玩家1名称
      * @param p2Name 玩家2名称
      */
-    public HotSpot(String p1Name, String p2Name) {
+    public HotSeat(String p1Name, String p2Name) {
         this.p1 = new Player(p1Name, PieceStatus.BLACK);
         this.p2 = new Player(p2Name, PieceStatus.WHITE);
         this.chargePlayer = p1;
