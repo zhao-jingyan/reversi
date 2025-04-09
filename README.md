@@ -27,7 +27,7 @@
     │   │       │       ├── PeaceBoard.java
     │   │       │       └── ReversiBoard.java
     │   │       └── spot
-    │   │           ├── HotSpot.java
+    │   │           ├── HotSeat.java
     │   │           └── Player.java
     │   └── logic
     │       ├── GameLogic.java
@@ -67,7 +67,7 @@
 
 1. `games` 子包
    - 游戏实例管理
-   - gameManager管理game，game管理board和hotSpot，board管理棋子，hotSpot管理player和游戏进程
+   - gameManager管理game，game管理board和hotSpot，board管理棋子，hotseat管理player和游戏进程
    - 本次新添加的游戏模式作为board的一个子类
    - 不同游戏的结束逻辑通过多态实现，board将其抽象为统一格式
    - 每个game实例在调用update时，都会先进行检查，如果游戏已经结束，则直接返回，这个game实例的状态以此锁死，update到over则触发这个锁死
