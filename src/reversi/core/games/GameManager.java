@@ -37,7 +37,7 @@ public final class GameManager {
         games.put(game.getGameNumber(), game);
     }
 
-    public void switchToGame(int gameNum) {
+    public void switchToGame(int gameNum) throws GameException {
         if (games.get(gameNum) == null) {
             throw new GameException(GameErrorCode.GAME_NOT_FOUND,
                     "Game " + gameNum + " does not exist");
