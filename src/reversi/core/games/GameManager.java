@@ -69,6 +69,9 @@ public final class GameManager {
     public Game getCurrentGame() { return currentGame; }
     public Board getCurrentBoard() { return currentGame.getBoard(); }
     public int getCurrentGameNumber() { return currentGame.getGameNumber(); }
+    public boolean isCurrentGameOver() { return currentGame.isOver(); }
+    public boolean isAllGamesOver() { return games.values().stream().allMatch(game -> game.isOver()); }
+    public int getTotalGames() { return games.size(); }
     public GameMode[] getGameList() {
         GameMode[] gameModes = new GameMode[games.size()];
         int index = 0;
@@ -76,7 +79,4 @@ public final class GameManager {
             gameModes[index++] = game.getGameMode();
         return gameModes;
     }
-    public boolean isCurrentGameOver() { return currentGame.isOver(); }
-    public boolean isAllGamesOver() { return games.values().stream().allMatch(game -> game.isOver()); }
-    public int getTotalGames() { return games.size(); }
 }
