@@ -38,7 +38,7 @@ public class GameLogic {// 单例类
         }
     }
 
-    private static void handleInput(InputInformation input) {
+    private static void handleInput(InputInformation input) throws GameException {
         switch (input.getInputType()) {
             case QUIT -> {
                 outputType = OutputType.QUIT;

@@ -27,7 +27,8 @@ public final class GameManager {
         try {
             switchToGame(1);
         } catch (GameException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
+            System.exit(1);
         }
     }
 

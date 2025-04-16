@@ -56,7 +56,6 @@ public class Game {
         } catch (GameException e) {
             throw e;
         }
-        
     }
 
     // Getters

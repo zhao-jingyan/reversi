@@ -8,7 +8,7 @@ package reversi.core.logic.exceptions;
  * 1. 包含错误代码和错误信息
  * 2. 用于在游戏逻辑中传递错误信息
  */
-public class GameException extends RuntimeException {
+public class GameException extends Exception {
     private final GameErrorCode code;  // 错误代码
 
     /**
