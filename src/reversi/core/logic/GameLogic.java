@@ -58,11 +58,7 @@ public class GameLogic {// 单例类
                 GameManager.getInstance().createGame("Bill_Black", "Walt_White", (GameMode) input.getInfo());
                 outputType = OutputType.REFRESH;
             }
-            case COORDINATES -> {
-                GameManager.getInstance().updateCurrentGame(input);
-                outputType = OutputType.REFRESH;
-            }
-            case PASS -> {
+            case COORDINATES, PASS-> {
                 GameManager.getInstance().updateCurrentGame(input);
                 outputType = OutputType.REFRESH;
             }

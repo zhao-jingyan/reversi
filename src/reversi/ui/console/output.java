@@ -5,7 +5,6 @@ import java.io.IOException;
 import reversi.core.games.game.GameMode;
 import reversi.core.games.game.board.Piece;
 import reversi.core.games.game.board.PieceStatus;
-import reversi.core.logic.exceptions.GameErrorCode;
 import reversi.core.logic.exceptions.GameException;
 import reversi.model.output.OutputInformation;
 
@@ -127,23 +126,7 @@ public class Output {
     }
 
     public static void printError(GameException e, OutputInformation output) {
-        switch (e.getCode()) {
-            case GameErrorCode.GAME_ALREADY_OVER -> {
-                System.err.println(e.getMessage());
-            }
-            case GameErrorCode.GAME_NOT_FOUND -> {
-                System.err.println(e.getMessage());
-            }
-            case GameErrorCode.ILLEGAL_MOVE -> {
-                System.err.println(e.getMessage());
-            }
-            case GameErrorCode.INVALID_INPUT -> {
-                System.err.println(e.getMessage());
-            }
-            default -> {
-                System.err.println(e.getMessage());
-            }
-        }
+        System.err.println(e.getMessage());
         System.out.printf(
             "\n< Coordinates(A1-H8) | Game Num(1-%d) | New Game(peace,reversi,gomoku) | Pass(pass) | Quit(quit) >\n",
             output.getGameInfo().getGameList().length);
