@@ -1,7 +1,6 @@
 /*
- * input is a class that contains a string and a scanner
- * it reads the input from the terminal and formats it into a coordinate
- * invalid input will return -1,-1
+ * Input reads the input from the console and determines the type of input.
+ * then creates the corresponding InputInformation object.
  */
 package reversi.ui.console;
 
