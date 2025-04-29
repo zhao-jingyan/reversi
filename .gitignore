@@ -18,4 +18,7 @@ out/
 
 # Logs
 *.log
-logs/ 
+logs/
+
+# Ensure Git respects case sensitivity
+* text=auto
