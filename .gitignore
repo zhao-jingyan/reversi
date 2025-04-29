@@ -19,3 +19,25 @@ out/
 # Logs
 *.log
 logs/ 
+
+# 临时文件
+*.tmp
+*.bak
+*.swp
+*~
+
+# Maven 包装器
+.mvn/
+mvnw
+mvnw.cmd
+
+# 测试报告
+surefire-reports/
+failsafe-reports/
+test-output/
+
+# 依赖下载目录
+.m2/
+
+# Thumbs.db
+Thumbs.db 
